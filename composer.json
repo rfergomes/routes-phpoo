@@ -1,9 +1,10 @@
 {
-    "name": "alexandrexandecar/routes-phpoo",
+    "name": "rodrigo.lima/inventarios",
+    "description": "Sistema de Inventario para ativo de TI",
     "authors": [
         {
-            "name": "Alexandre Cardoso",
-            "email": "xandecar@hotmail.com"
+            "name": "Rodrigo Fernando Gomes Lima",
+            "email": "rfergomes@gmail.com"
         }
     ],
     "require": {
@@ -22,5 +23,8 @@
             "app/helpers/redirect.php",
             "app/helpers/env.php"
         ]
+    },
+    "scripts":{
+        "server": "php -S localhost:8000 -t public"
     }
 }
