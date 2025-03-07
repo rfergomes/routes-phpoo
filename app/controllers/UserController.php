@@ -1,20 +1,32 @@
 <?php
+
 namespace app\controllers;
 
-use app\controllers\Controller;
 use app\core\Request;
-use app\database\models\User;
 use app\support\Csrf;
+use app\database\Filters;
 use app\support\Validate;
+use app\database\models\User;
+use app\controllers\Controller;
 
 class UserController extends Controller
 {
     public function edit($params)
     {
+        $filters = new Filters;
+        $filters->where('users.id', '>', 0);
+        $filters->join('user_groups', 'users.user_level', '=', 'user_groups.group_level', 'left join');
+
+        $user = new User;
+        $user->setFields('users.id, name, username, group_name, image, status, last_login');
+        $user->setFilters($filters);
+        $usersFound = $user->fetchAll();
+
         $this->view(
             'user',
             [
-                'title' => 'Editar user'
+                'title' => 'Editar user',
+                'users' => $usersFound,
             ]
         );
     }
@@ -26,7 +38,7 @@ class UserController extends Controller
         $validated = $validate->validate([
             'firstName' => 'required',
             'lastName' => 'required',
-            'email' => 'email|required|unique:'.User::class,
+            'email' => 'email|required|unique:' . User::class,
             'password' => 'maxLen:5|required',
         ]);
 
@@ -34,6 +46,6 @@ class UserController extends Controller
             return redirect('/user/12');
         }
 
-        dd($validated);
+        \var_dump($validated);
     }
 }

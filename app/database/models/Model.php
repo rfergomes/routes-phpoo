@@ -147,7 +147,7 @@ abstract class Model
   public function count()
   {
     try {
-      $sql = "select {$this->fields} from {$this->table} {$this->filters->dump()}";
+      $sql = "select {$this->fields} from {$this->table} {$this->filters?->dump()}";
 
       // var_dump($sql);
       // die();

@@ -1,4 +1,4 @@
-<?php $this->layout('master', ['title' => $title]) ?>
+<?php $this->layout('layout', ['title' => $title]) ?>
 
 <h1>Contato</h1>
 <?php echo flash('sent_success', 'color:green;') ?>
