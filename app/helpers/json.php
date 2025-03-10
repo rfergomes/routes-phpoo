@@ -1,6 +1,6 @@
 <?php
 
-function isJson(string $data)
+function isJson(string | array $data)
 {
     json_decode($data);
 

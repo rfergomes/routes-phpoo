@@ -11,11 +11,11 @@ trait Validations
         $data = Request::input($field);
 
         $model = new $param;
-        $model->setFields('id,firstName,lastName');
+        $model->setFields('id,email,cpf');
         $registerFound = $model->findBy($field, $data);
 
         if ($registerFound) {
-            Flash::set($field, "O valor {$data} já está registrado");
+            Flash::set($field, "O valor {$field} já está registrado");
             return null;
         }
 
@@ -25,7 +25,7 @@ trait Validations
     public function email($field)
     {
         if (!filter_input(INPUT_POST, $field, FILTER_VALIDATE_EMAIL)) {
-            Flash::set($field, "Esse campo tem que ter um email válido");
+            Flash::set($field, "{$field} - Esse campo tem que ter um email válido");
             return null;
         }
 

@@ -16,12 +16,13 @@ class ContactController extends Controller
     public function store()
     {
         $validate = new Validate;
+        
         $validated = $validate->validate([
             'email' => 'email|required',
             'subject' => 'required',
             'message' => 'required'
         ]);
-
+        
         if (!$validated) {
             return redirect('/contact');
         }

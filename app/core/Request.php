@@ -1,4 +1,5 @@
 <?php
+
 namespace app\core;
 
 use Exception;
@@ -7,6 +8,15 @@ class Request
 {
     public static function input(string $name)
     {
+        // Verificar se os dados foram enviados como JSON
+        $jsonInput = file_get_contents('php://input');
+        $jsonData = json_decode($jsonInput, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && isset($jsonData[$name])) {
+            return $jsonData[$name];
+        }
+
+        // Verificar se os dados foram enviados como dados de formulário padrão
         if (isset($_POST[$name])) {
             return $_POST[$name];
         }
@@ -17,26 +27,31 @@ class Request
 
     public static function all()
     {
+        // Verificar se os dados foram enviados como JSON
+        $jsonInput = file_get_contents('php://input');
+        $jsonData = json_decode($jsonInput, true);
+
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $jsonData;
+        }
+
+        // Se os dados não foram enviados como JSON, retornar os dados de formulário padrão
         return $_POST;
     }
 
     public static function only(string|array $only)
     {
         $fieldsPost = self::all();
-        $fieldsPostkeys = array_keys($fieldsPost);
-
-        // dd($fieldsPostkeys);
-
         $arr = [];
-        foreach ($fieldsPostkeys as $index => $value) {
-            $onlyField = (is_string($only) ? $only : (isset($only[$index]) ? $only[$index] : null));
-            if (isset($fieldsPost[$onlyField])) {
-                $arr[$onlyField] = $fieldsPost[$onlyField];
+
+        if (is_string($only)) {
+            $only = [$only];
+        }
+
+        foreach ($only as $field) {
+            if (isset($fieldsPost[$field])) {
+                $arr[$field] = $fieldsPost[$field];
             }
-            // echo $value . ' ' .$onlyField .'<br />';
-            // if ($value !== $onlyField) {
-            //     unset($fieldsPost[$value]);
-            // }
         }
 
         return $arr;
@@ -64,7 +79,7 @@ class Request
         if (!isset($_GET[$name])) {
             throw new Exception("Não existe a query string {$name}");
         }
-        return $_GET[$name] ;
+        return $_GET[$name];
     }
 
     public static function toJson(array $data)

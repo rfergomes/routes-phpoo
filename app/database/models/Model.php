@@ -80,7 +80,7 @@ abstract class Model
   public function fetchAll()
   {
     try {
-      $sql = "select {$this->fields} from {$this->table} {$this->filters?->dump()} {$this->pagination}";
+      $sql = "SELECT {$this->fields} FROM {$this->table} {$this->filters?->dump()} {$this->pagination}";
 
       $connection = Connection::connect();
 
@@ -96,9 +96,10 @@ abstract class Model
   public function findBy(string $field = '', string $value = '')
   {
     try {
+
       $sql = (empty($this->filters)) ?
-        "select {$this->fields} from {$this->table} where {$field} = :{$field}" :
-        "select {$this->fields} from {$this->table} {$this->filters?->dump()}";
+        "SELECT {$this->fields} FROM {$this->table} where {$field} = :{$field}" :
+        "SELECT {$this->fields} FROM {$this->table} {$this->filters?->dump()}";
 
       $connection = Connection::connect();
 
@@ -112,10 +113,10 @@ abstract class Model
     }
   }
 
-  public function first($field = 'id', $order = 'asc')
+  public function first($field = 'id', $order = 'ASC')
   {
     try {
-      $sql = "select {$this->fields} from {$this->table} order by {$field} {$order} limit 1";
+      $sql = "SELECT {$this->fields} FROM {$this->table} ORDER BY {$field} {$order} LIMIT 1";
 
       $connection = Connection::connect();
 

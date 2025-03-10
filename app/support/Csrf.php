@@ -21,15 +21,15 @@ class Csrf
     public static function validateToken()
     {
         if (!isset($_SESSION['token'])) {
-            throw new Exception("Token inválido");
+            return \json_encode(["error" => "Token inválido " . (isset($_SESSION['token']) ? $_SESSION['token'] : "Nenhum token foi passado")]);
         }
 
         $token = Request::only('token');
 
-        // dd($token['token'], $_SESSION['token']);
+        //var_dump($token['token'], $_SESSION['token']);die();
 
         if (empty($token) || $_SESSION['token'] !== $token['token']) {
-            throw new Exception("Token inválido");
+            return \json_encode(["error"=>"Token inválido {$_SESSION['token']} != {$token['token']}"]);
         }
 
         unset($_SESSION['token']);
