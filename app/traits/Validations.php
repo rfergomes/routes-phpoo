@@ -1,4 +1,5 @@
 <?php
+
 namespace app\traits;
 
 use app\core\Request;
@@ -11,7 +12,7 @@ trait Validations
         $data = Request::input($field);
 
         $model = new $param;
-        $model->setFields('id,email,cpf');
+        $model->setFields('id,email');
         $registerFound = $model->findBy($field, $data);
 
         if ($registerFound) {
@@ -50,6 +51,19 @@ trait Validations
 
         if (strlen($data) > $param) {
             Flash::set($field, "Esse campo tem que ter no máximo {$param} caracteres");
+            return null;
+        }
+
+        return strip_tags($data, '<p><b><ul><span><em>');
+        // dd($param);
+    }
+
+    public function minLen($field, $param)
+    {
+        $data = Request::input($field);
+
+        if (strlen($data) < $param) {
+            Flash::set($field, "Esse campo tem que ter no mínimo {$param} caracteres");
             return null;
         }
 

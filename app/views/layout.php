@@ -61,7 +61,7 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col-sm-auto">
                             <div class="page-header-title">
-                                <h5 class="mb-0">Home</h5>
+                                <h5 class="mb-0"><?= $this->e($title) ?></h5>
                             </div>
                         </div>
                         <div class="col-sm-auto">

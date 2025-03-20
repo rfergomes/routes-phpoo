@@ -1,14 +1,28 @@
 <?php
+
 namespace app\support;
 
 use app\traits\Validations;
 use Exception;
+/**
+ * Class Validate
+ *
+ * This class provides validation support for various data inputs.
+ * It includes methods to validate different types of data such as strings, numbers, emails, etc.
+ *
+ * @package App\Support
+ */
 
 class Validate
 {
     use Validations;
 
     private $inputsValidation = [];
+
+    public function getInputs()
+    {
+        return $this->inputsValidation;
+    }
 
     private function getParam($validation, $param)
     {
@@ -42,14 +56,14 @@ class Validate
 
                 // dd($methodValidation);
                 $this->inputsValidation[$field] = $this->$validation($field, $param);
-                
+
                 // dd($methodValidation, $param);
             }
 
             if ($havePipes) {
                 $validations = explode('|', $validation);
                 $param = '';
-    
+
                 $this->multipleValidations($validations, $field, $param);
             }
         }
@@ -65,7 +79,7 @@ class Validate
             $this->validationExist($validation);
 
             $this->inputsValidation[$field] = $this->$validation($field, $param);
-            
+
             if ($this->inputsValidation[$field] === null) {
                 break;
             }

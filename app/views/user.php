@@ -27,13 +27,20 @@
                         </label>
                     </div>
                     <div class="datatable-search">
-                        <input class="datatable-input" placeholder="Pesquisar..." type="search" title="Search within table" aria-controls="pc-dt-simple">
+                        <input class="datatable-input" placeholder="Pesquisar..." type="search" title="Pesquisar na tabela" aria-controls="pc-dt-simple">
                     </div>
                 </div>
+                <?php if (isset($_SESSION['success'])) { ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Sucesso!</strong> <?php echo flash('success', 'color:red');  ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php } ?>
             </div>
             <div class="card-body table-card">
                 <div class="datatable-wrapper datatable-loading no-footer searchable fixed-columns">
                     <div class="datatable-container">
+
                         <table class="table table-hover datatable-table" id="pc-dt-simple">
                             <thead class="bg-dark">
                                 <tr>
@@ -76,7 +83,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="list-inline-item align-bottom">
-                                                        <a href="/user/userForm/<?= $user->id; ?>" class="avtar avtar-xs btn-link-success btn-pc-default" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                                                        <a href="/user/<?= $user->id; ?>" class="avtar avtar-xs btn-link-success btn-pc-default" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                                                             <i class="ti ti-edit-circle f-18"></i>
                                                         </a>
                                                     </li>
@@ -99,12 +106,7 @@
                         <div class="datatable-bottom">
                             <div class="datatable-info"><?= 'Total de ' . $count . ' usuário(s)'; ?></div>
                             <nav class="datatable-pagination">
-                                <ul class="datatable-pagination-list">
-                                    <li class="datatable-pagination-list-item datatable-hidden datatable-disabled"><a data-page="1" class="datatable-pagination-list-item-link">‹</a></li>
-                                    <li class="datatable-pagination-list-item datatable-active"><a data-page="1" class="datatable-pagination-list-item-link">1</a></li>
-                                    <li class="datatable-pagination-list-item"><a data-page="2" class="datatable-pagination-list-item-link">2</a></li>
-                                    <li class="datatable-pagination-list-item"><a data-page="2" class="datatable-pagination-list-item-link">›</a></li>
-                                </ul>
+                                <?= $pagination->links(); ?>
                             </nav>
                         </div>
                     </div>
@@ -122,6 +124,7 @@
 <?php $this->push('scripts') ?>
 <script src="../assets/js/pages/user.js"></script>
 <?php $this->end() ?>
+
 
 
 <!-- Start Modal -->
@@ -191,7 +194,7 @@
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="password" name="password"
                                 placeholder="Senha">
-                                <div class="error-message" id="error-password"></div>
+                            <div class="error-message" id="error-password"></div>
                         </div>
                     </div>
 
