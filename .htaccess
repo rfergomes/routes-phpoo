@@ -1,5 +1,8 @@
-RewriteEngine on
-Optiona All -Indexes
-
-RewriteCond %{REQUEST_URI} !public/
-RewriteRule (.*) /public/$1 [L]
+RewriteEngine On
+Options All -Indexes
+RewriteBase /inventarios/
+DirectoryIndex index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.*)$ public/index.php/$1 [QSA,L]

@@ -124,13 +124,12 @@ class UserController extends Controller
             'email' => 'email|required|unique:' . User::class,
             'password' => 'maxLen:5|required',
         ]);
-        \var_dump($validate, $params);
-        die();
+        var_dump($validate, $params);
         if (!$validated) {
             return redirect('/user/12');
         }
 
-        \var_dump($validated);
+        var_dump($validated);
     }
 
     public function save()
