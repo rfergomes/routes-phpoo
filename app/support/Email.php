@@ -11,6 +11,7 @@ class Email
     private string $fromName;
     private string $template = '';
     private array $templateData = [];
+    private string $subject;
     private string $message;
     private PHPMailer $mail;
 
@@ -81,7 +82,7 @@ class Email
         $file = '../app/views/emails/'.$this->template.'.html';
 
         if (!file_exists($file)) {
-            throw new Exception("O template {$this->tamplate} não existe");
+            throw new Exception("O template {$this->template} não existe");
         }
 
         $template = file_get_contents($file);
