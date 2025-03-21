@@ -9,7 +9,5 @@ session_start();
 
 $dotenv = Dotenv::createImmutable('../');
 $dotenv->load();
-
-
-
+$router = new Router();
 Router::run();
