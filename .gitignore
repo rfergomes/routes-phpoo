@@ -1,1 +1,5 @@
 vendor
+.env
+settings.json
+composer.lock
+trash/
