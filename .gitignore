@@ -1,5 +1,47 @@
-vendor
+# Ignora configurações do VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+
+# Ignora dependências do Composer
+/vendor/
+
+# Ignora arquivos de ambiente (Dotenv)
 .env
-settings.json
-composer.lock
-trash/
+.env.local
+.env.*
+
+# Ignora arquivos de log
+*.log
+
+# Ignora IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Ignora arquivos de cache/sessão/temp
+*.cache
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ignora arquivos de upload (se aplicável)
+storage/uploads/
+uploads/
+
+# Ignora relatórios de coverage/testes
+coverage/
+phpunit.xml.cache
+
+# Ignora banco de dados SQLite (se aplicável)
+*.sqlite
+*.sqlite3
+
+# Ignora arquivos de build ou dist
+/public/build/
+public/assets/
+node_modules/
+dist/
