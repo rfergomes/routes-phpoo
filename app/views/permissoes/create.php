@@ -8,6 +8,7 @@
             </div>
             <div class="card-body">
                 <form action="/permissao/save" method="post">
+                <?php echo getToken(); ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -86,7 +87,7 @@
             const moduloId = moduloSelect.value;
             checkboxes.forEach(cb => {
                 const acao = cb.dataset.acao;
-                cb.name = `dados[${moduloId}][${acao}]`;
+                cb.name = `permissoes[${moduloId}][${acao}]`;
             });
         }
 

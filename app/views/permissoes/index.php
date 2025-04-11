@@ -33,14 +33,17 @@
                         </form>
 
                     </div>
-                    <div class="datatable-search"></div>
+                    <div class="datatable-search">
+                        <?= $this->insert('partials/flash'); ?>
+                    </div>
                 </div>
             </div>
             <div class="card-body table-card">
                 <div class="datatable-wrapper datatable-loading no-footer searchable fixed-columns">
                     <div class="datatable-container">
-                        <?= $this->insert('partials/flash'); ?>
+
                         <form action="/permissao/save" method="post">
+                            <?php echo getToken(); ?>
                             <input type="hidden" name="nivel_id" value="<?= $permissoes[0]->nivel_id ?>">
                             <table class="table datatable-table" id="pc-dt-simple">
                                 <thead class="bg-dark text-white">
@@ -71,10 +74,10 @@
                                                         <?= $tipo[$acao] ? 'checked' : '' ?> class="form-check-input">-->
 
                                                     <div class="form-check form-switch custom-switch-v1 mb-2">
-                                                        <input type="checkbox" 
-                                                        class="form-check-input input-success" 
-                                                        name="permissoes[<?= $permissao->modulo_id ?>][<?= $acao ?>]" 
-                                                        <?= $tipo[$acao] ? 'checked' : '' ?>>                                                       
+                                                        <input type="checkbox"
+                                                            class="form-check-input input-success"
+                                                            name="permissoes[<?= $permissao->modulo_id ?>][<?= $acao ?>]"
+                                                            <?= $tipo[$acao] ? 'checked' : '' ?>>
                                                     </div>
                                                 </td>
                                             <?php endforeach; ?>

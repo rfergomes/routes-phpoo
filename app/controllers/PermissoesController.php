@@ -58,7 +58,7 @@ class PermissoesController extends Controller
    {
 
       $inputs = Request::all();
-
+      $validated=new Validate();
       $nivel_id = $inputs['nivel_id'];
       $dados = $inputs['permissoes'];
 
@@ -69,13 +69,14 @@ class PermissoesController extends Controller
 
       // Insere as novas permissões
       foreach ($dados as $modulo_id => $acoes) {
-         $filters = new Filters;
-         $filters->where('nivel_id', '=', $nivel_id, 'and');
-         $filters->where('modulo_id', '=', $modulo_id);
+         $filters = (new Filters())
+            ->where('nivel_id', '=', $nivel_id, 'and')
+            ->where('modulo_id', '=', $modulo_id);
+
          $this->permissao->setFilters($filters);
 
          $exists = $this->permissao->fetchAll();
-
+$msg='';
          if ($exists) {
             // Atualiza
 
@@ -85,8 +86,10 @@ class PermissoesController extends Controller
                'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
                'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
             ]);
+            $msg='Permissões atualizadas com sucesso!';
          } else {
             // Insere
+
             $this->permissao->create([
                'nivel_id' => $nivel_id,
                'modulo_id' => $modulo_id,
@@ -95,11 +98,12 @@ class PermissoesController extends Controller
                'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
                'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
             ]);
+            $msg= 'Permisão adicionada com sucesso!';
          }
       }
 
       // Redirecionar com sucesso
-      redirect("/permissao?nivel_id=$nivel_id", 'success', 'Permissões atualizadas com sucesso!');
+      redirect("/permissao?nivel_id=$nivel_id", 'success', $msg);
    }
 
    /* Exemplo de uso
@@ -115,10 +119,8 @@ class PermissoesController extends Controller
    {
       PermissionMiddleware::check($this->moduloId, 'adicionar');
 
-
       $this->nivel = new Nivel();
       $niveis = $this->nivel->fetchAll();
-
 
       $this->permissao = new Permission();
       $this->permissao->setFields('modulo_id');
@@ -126,13 +128,11 @@ class PermissoesController extends Controller
 
       $lista_ids = $lista_ids = implode(',', array_map(fn($p) => $p->modulo_id, $permissoes));
 
-      $lista_ids = [$lista_ids];
-
       $this->modulo = new Modulo();
       $filters = (new Filters())
-         ->where('id', 'NOT IN', $lista_ids)
+         ->where('id', 'NOT IN', [$lista_ids])
          ->orderBy('id', 'ASC');
-     
+
       /*
       $sql = $filters->dump();
       $binds = $filters->getBind();
@@ -144,8 +144,9 @@ class PermissoesController extends Controller
       $modulos = $this->modulo->fetchAll();
 
       if (!$modulos) {
-         //redirect('/permissao', 'warning', 'Todos os módulos já possuem permissões');
+         redirect('/permissao', 'warning', 'Todos os módulos já possuem permissões');
       }
+
       $this->view('permissoes/create', [
          'title' => 'Criar Permissão',
          'niveis' => $niveis,
