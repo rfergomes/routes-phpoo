@@ -55,7 +55,7 @@ class PermissoesController extends Controller
    {
 
       $inputs = Request::all();
-      $validated=new Validate();
+      $validated = new Validate();
       $nivel_id = $inputs['nivel_id'];
       $dados = $inputs['permissoes'];
 
@@ -73,20 +73,19 @@ class PermissoesController extends Controller
          $this->permissao->setFilters($filters);
 
          $exists = $this->permissao->fetchAll();
-$msg='';
+         $msg = '';
          if ($exists) {
-            // Atualiza
-
-            $result = $this->permissao->update('id', $exists[0]->id, [
+            // Edita
+            $this->permissao->update('id', $exists[0]->id, [
                'pode_ver' => isset($acoes['ver']) ? 1 : 0,
                'pode_editar' => isset($acoes['editar']) ? 1 : 0,
                'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
                'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
             ]);
-            $msg='Permissões atualizadas com sucesso!';
+            // Redirecionar com sucesso
+            redirect("/permissao?nivel_id=$nivel_id", 'success', 'Permissões atualizadas com sucesso!');
          } else {
-            // Insere
-
+            // Adiciona
             $this->permissao->create([
                'nivel_id' => $nivel_id,
                'modulo_id' => $modulo_id,
@@ -95,12 +94,10 @@ $msg='';
                'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
                'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
             ]);
-            $msg= 'Permisão adicionada com sucesso!';
+            // Redirecionar com sucesso
+            redirect("/permissao?nivel_id=$nivel_id", 'success', 'Permisão adicionada com sucesso!');
          }
       }
-
-      // Redirecionar com sucesso
-      redirect("/permissao?nivel_id=$nivel_id", 'success', $msg);
    }
 
    /* Exemplo de uso

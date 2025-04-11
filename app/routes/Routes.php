@@ -68,23 +68,22 @@ class Routes
                 '/login' => 'AuthController@authenticate',
 
                 // Usuário
-                '/usuario/update' => 'UsuarioController@update',
-                '/usuario/store' => 'UsuarioController@store',
+                '/usuario/save' => 'UsuarioController@save',
 
                 // Fabricante
-                '/fabricante/store' => 'FabricanteController@store',
-                '/fabricante/update' => 'FabricanteController@update',
+                '/fabricante/save' => 'FabricanteController@save',
 
                 // Fornecedor
-                '/fornecedor/store' => 'FornecedorController@store',
-                '/fornecedor/update' => 'FornecedorController@update',
+                '/fornecedor/save' => 'FornecedorController@save',
+
+                // Módulo
+                '/modulo/save'=> 'ModuloController@save',
 
                 // Permissão
                 '/permissao/save'=> 'PermissoesController@save',
 
                 // Transferência
-                '/transferencia/store' => 'TransferenciaController@store',
-                '/transferencia/update' => 'TransferenciaController@update',
+                '/transferencia/save' => 'TransferenciaController@save',
 
                 // Adicione mais conforme necessário
             ]
