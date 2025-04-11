@@ -1,5 +1,5 @@
 <?php
-    
+
 
 namespace app\controllers;
 
@@ -10,33 +10,34 @@ use app\middleware\PermissionMiddleware;
 class ModuloController extends Controller
 {
     protected $modulo;
+    protected $moduloId = 13;
+    protected $viewFolder = 'modulos';
     public function __construct()
     {
         $this->modulo = new Modulo();
     }
     public function index()
     {
-        PermissionMiddleware::check(1,'ver');
+        PermissionMiddleware::check($this->moduloId, 'ver');
         $this->view('modulos/index', [
             'title' => 'Módulos',
         ]);
-        
     }
     public function create()
     {
-        PermissionMiddleware::check(1,'criar');
+        PermissionMiddleware::check($this->moduloId, 'criar');
         $this->view('modulos/create', [
             'title' => 'Criar Módulo',
         ]);
     }
     public function edit($params)
     {
-        PermissionMiddleware::check(1,'editar');
+        PermissionMiddleware::check($this->moduloId, 'editar');
         $this->view('modulos/edit', [
             'title' => 'Editar Módulo',
         ]);
     }
-    public function update($params)
+    public function save($params)
     {
         $this->view('modulos/update', [
             'title' => 'Atualizar Módulo',
@@ -44,7 +45,7 @@ class ModuloController extends Controller
     }
     public function delete($params)
     {
-        PermissionMiddleware::check(1,'deletar');
+        PermissionMiddleware::check($this->moduloId, 'deletar');
         $this->view('modulos/delete', [
             'title' => 'Deletar Módulo',
         ]);

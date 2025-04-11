@@ -45,11 +45,11 @@ class Routes
                 '/transferencia/delete/[0-9]+' => 'TransferenciaController@delete',
 
                 //Módulos
-                '/modulos' => 'ModulosController@index',
-                '/modulos/create' => 'ModulosController@create',
-                '/modulos/edit/[0-9]+' => 'ModulosController@edit',
-                '/modulos/delete/[0-9]+' => 'ModulosController@delete',
-                '/modulos/show/[0-9]+' => 'ModulosController@show',
+                '/modulo' => 'ModuloController@index',
+                '/modulo/create' => 'ModuloController@create',
+                '/modulo/edit/[0-9]+' => 'ModuloController@edit',
+                '/modulo/delete/[0-9]+' => 'ModuloController@delete',
+                '/modulo/show/[0-9]+' => 'ModuloController@show',
                 
                 // Outros controllers (adicione conforme necessário)
                 '/emprestimo' => 'EmprestimoController@index',

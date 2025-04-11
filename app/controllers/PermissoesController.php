@@ -2,14 +2,11 @@
 
 namespace App\Controllers;
 
-use php_user_filter;
-use app\support\Flash;
 use app\database\Filters;
 use app\support\Validate;
 use app\database\models\Nivel;
 use app\Controllers\Controller;
 use app\core\Request;
-use app\core\Session;
 use app\database\models\Modulo;
 use app\database\models\Permission;
 use app\middleware\PermissionMiddleware;
