@@ -1,11 +1,17 @@
 <?php
+
 namespace app\controllers;
 
 use Exception;
 use League\Plates\Engine;
+use app\database\models\Model;
 
 abstract class Controller
 {
+    protected Engine $templates;
+    protected string $pathView;
+
+
     protected function view(string $view, array $data = [])
     {
         $viewPath = "../app/views/".$view.'.php';
@@ -15,7 +21,7 @@ abstract class Controller
         }
 
         $templates = new Engine('../app/views');
-
+        
         echo $templates->render($view, $data);
     }
 }

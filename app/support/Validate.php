@@ -40,7 +40,7 @@ class Validate
         }
     }
 
-    public function validate(array $validationsFields)
+    public function validate(array $validationsFields, bool $persistInputs=false)
     {
         // $inputsValidation = [];
         foreach ($validationsFields as $field => $validation) {
@@ -68,6 +68,10 @@ class Validate
             }
         }
 
+        if ($persistInputs) {
+            setOld();
+        }
+
         return $this->returnValidation();
     }
 
@@ -80,7 +84,9 @@ class Validate
 
             $this->inputsValidation[$field] = $this->$validation($field, $param);
 
-            if ($this->inputsValidation[$field] === null) {
+            if ($this->inputsValidation[$field] === false || $this->inputsValidation[$field] === null) {
+                // Se a validação falhar, armazena o erro e não continua com as outras validações
+                // Se a validação falhar, não precisa continuar com as outras validações
                 break;
             }
         }
@@ -90,7 +96,7 @@ class Validate
     {
         Csrf::validateToken();
 
-        if (in_array(null, $this->inputsValidation, true)) {
+        if (in_array(false, $this->inputsValidation, true)) {
             return null;
         }
 

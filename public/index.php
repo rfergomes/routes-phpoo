@@ -2,10 +2,12 @@
 
 use app\core\Router;
 use Dotenv\Dotenv;
+use app\core\Session;
 
 require '../vendor/autoload.php';
 
-session_start();
+Session::start();
+
 
 $dotenv = Dotenv::createImmutable('../');
 $dotenv->load();

@@ -10,6 +10,7 @@ class Router
         try {
             $routerRegistered = new RoutersFilter;
             $router = $routerRegistered->get();
+    
             $controller = new Controller;
             $controller->execute($router);
     

@@ -1,0 +1,1 @@
+<h1>Equipamentos - Index</h1>

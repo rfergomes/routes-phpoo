@@ -1,7 +1,15 @@
 <?php
 
+use app\support\flash;
 
-function redirect(string $to)
+function redirect(string $to, string $type = '', string $message = ''): never
 {
-    return header("Location: {$to}");
+    if ($type && $message) {
+        flash::set($type, $message);
+    }
+
+    header("Location: {$to}");
+    exit;
 }
+
+

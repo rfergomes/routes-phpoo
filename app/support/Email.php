@@ -1,4 +1,5 @@
 <?php
+
 namespace app\support;
 
 use Exception;
@@ -26,7 +27,7 @@ class Email
         $this->mail->Port       = env('EMAIL_PORT');
     }
 
-    public function from(string $from, string $name = ''):Email
+    public function from(string $from, string $name = ''): Email
     {
         $this->from = $from;
 
@@ -35,14 +36,14 @@ class Email
         return $this;
     }
 
-    public function to(string|array $to):Email
+    public function to(string|array $to): Email
     {
         $this->to = $to;
 
         return $this;
     }
 
-    public function template(string $template, array $templateData):EMail
+    public function template(string $template, array $templateData): EMail
     {
         $this->template = $template;
         $this->templateData = $templateData;
@@ -50,14 +51,14 @@ class Email
         return $this;
     }
 
-    public function subject(string $subject):Email
+    public function subject(string $subject): Email
     {
         $this->subject = $subject;
 
         return $this;
     }
 
-    public function message(string $message):Email
+    public function message(string $message): Email
     {
         $this->message = $message;
         return $this;
@@ -71,7 +72,7 @@ class Email
                 $this->mail->addAddress($to);
             }
         }
-        
+
         if (is_string($this->to)) {
             $this->mail->addAddress($this->to);
         }
@@ -79,7 +80,7 @@ class Email
 
     private function sendWithTemplate()
     {
-        $file = '../app/views/emails/'.$this->template.'.html';
+        $file = '../app/views/emails/' . $this->template . '.html';
 
         if (!file_exists($file)) {
             throw new Exception("O template {$this->template} não existe");

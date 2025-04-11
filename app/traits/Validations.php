@@ -17,7 +17,7 @@ trait Validations
 
         if ($registerFound) {
             Flash::set($field, "O valor {$field} já está registrado");
-            return null;
+            return false;
         }
 
         return strip_tags($data, '<p><b><ul><span><em>');
@@ -27,7 +27,7 @@ trait Validations
     {
         if (!filter_input(INPUT_POST, $field, FILTER_VALIDATE_EMAIL)) {
             Flash::set($field, "{$field} - Esse campo tem que ter um email válido");
-            return null;
+            return false;
         }
 
         return strip_tags(Request::input($field), '<p><b><ul><span><em>');
@@ -39,7 +39,7 @@ trait Validations
 
         if (empty($data)) {
             Flash::set($field, "Esse campo é obrigatório");
-            return null;
+            return false;
         }
 
         return strip_tags($data, '<p><b><ul><span><em>');
@@ -50,8 +50,9 @@ trait Validations
         $data = Request::input($field);
 
         if (strlen($data) > $param) {
+
             Flash::set($field, "Esse campo tem que ter no máximo {$param} caracteres");
-            return null;
+            return false;
         }
 
         return strip_tags($data, '<p><b><ul><span><em>');
@@ -64,10 +65,21 @@ trait Validations
 
         if (strlen($data) < $param) {
             Flash::set($field, "Esse campo tem que ter no mínimo {$param} caracteres");
-            return null;
+            return false;
         }
 
         return strip_tags($data, '<p><b><ul><span><em>');
         // dd($param);
+    }
+
+        public function optional($field)
+    {
+        $data = Request::input($field);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        return strip_tags($data, '<p><b><ul><span><em>');
     }
 }

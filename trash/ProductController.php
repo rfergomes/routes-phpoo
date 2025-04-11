@@ -5,6 +5,6 @@ class ProductController
 {
     public function show($params)
     {
-        dd($params);
+        \var_dump($params);
     }
 }

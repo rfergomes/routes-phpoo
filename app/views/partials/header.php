@@ -90,7 +90,7 @@
                             <i class="ph-duotone ph-lock-key"></i>
                             <span>Lock Screen</span>
                         </a>
-                        <a href="#!" class="dropdown-item">
+                        <a href="/logout" class="dropdown-item">
                             <i class="ph-duotone ph-power"></i>
                             <span>Logout</span>
                         </a>
@@ -129,7 +129,7 @@
                                     <p class="text-span">Today</p>
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar avtar avtar-s">
+                                            <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar avtar avtar-s">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <div class="d-flex">
@@ -214,7 +214,7 @@
                                 <li class="list-group-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar avtar avtar-s">
+                                            <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar avtar avtar-s">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <div class="d-flex">
@@ -275,7 +275,7 @@
                         aria-haspopup="false"
                         data-bs-auto-close="outside"
                         aria-expanded="false">
-                        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
+                        <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -287,7 +287,7 @@
                                     <li class="list-group-item">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="wid-50 rounded-circle">
+                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="wid-50 rounded-circle">
                                             </div>
                                             <div class="flex-grow-1 mx-3">
                                                 <h5 class="mb-0">Carson Darrin</h5>
@@ -309,9 +309,9 @@
                                                 <span>Recently mail</span>
                                             </span>
                                             <div class="user-group">
-                                                <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="avtar">
-                                                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="avtar">
-                                                <img src="../assets/images/user/avatar-3.jpg" alt="user-image" class="avtar">
+                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-1.jpg" alt="user-image" class="avtar">
+                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="avtar">
+                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-3.jpg" alt="user-image" class="avtar">
                                             </div>
                                         </a>
                                         <a href="#" class="dropdown-item">
@@ -401,7 +401,7 @@
                                                 <span>Add account</span>
                                             </span>
                                         </a>
-                                        <a href="#" class="dropdown-item">
+                                        <a href="/logout" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-power"></i>
                                                 <span>Logout</span>

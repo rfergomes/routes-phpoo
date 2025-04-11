@@ -34,13 +34,13 @@ abstract class Model
   public function create(array $data)
   {
     try {
-      $sql = "insert into {$this->table} (";
-      $sql .= implode(',', array_keys($data)) . ") values(";
+      $sql = "INSERT INTO {$this->table} (";
+      $sql .= implode(',', array_keys($data)) . ") VALUES(";
       $sql .= ':' . implode(',:', array_keys($data)) . ")";
 
       $connect = Connection::connect();
 
-      $prepare = $connect->prepare($data);
+      $prepare = $connect->prepare($sql,$data);
 
       return $prepare->execute($data);
     } catch (PDOException $e) {
@@ -56,14 +56,14 @@ abstract class Model
   public function update(string $field, string|int $fieldValue, array $data)
   {
     try {
-      $sql = "update {$this->table} set ";
+      $sql = "UPDATE {$this->table} SET ";
       foreach ($data as $key => $value) {
         $sql .= "{$key} = :{$key},";
       }
 
       $sql = rtrim($sql, ',');
 
-      $sql .= " where {$field} = :{$field}";
+      $sql .= " WHERE {$field} = :{$field}";
 
       $connection = Connection::connect();
 
@@ -85,6 +85,7 @@ abstract class Model
       $connection = Connection::connect();
 
       $prepare = $connection->prepare($sql);
+
       $prepare->execute($this->filters ? $this->filters->getBind() : []);
 
       return $prepare->fetchAll(PDO::FETCH_CLASS);
@@ -96,9 +97,8 @@ abstract class Model
   public function findBy(string $field = '', string $value = '')
   {
     try {
-
       $sql = (empty($this->filters)) ?
-        "SELECT {$this->fields} FROM {$this->table} where {$field} = :{$field}" :
+        "SELECT {$this->fields} FROM {$this->table} WHERE {$field} = :{$field}" :
         "SELECT {$this->fields} FROM {$this->table} {$this->filters?->dump()}";
 
       $connection = Connection::connect();
@@ -113,7 +113,7 @@ abstract class Model
     }
   }
 
-  public function first($field = 'id', $order = 'ASC')
+  public function first($field = 'id', $order = 'asc')
   {
     try {
       $sql = "SELECT {$this->fields} FROM {$this->table} ORDER BY {$field} {$order} LIMIT 1";
@@ -148,7 +148,7 @@ abstract class Model
   public function count()
   {
     try {
-      $sql = "select {$this->fields} from {$this->table} {$this->filters?->dump()}";
+      $sql = "select {$this->fields} from {$this->table} {$this->filters->dump()}";
 
       // var_dump($sql);
       // die();

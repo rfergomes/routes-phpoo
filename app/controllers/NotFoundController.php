@@ -1,11 +1,16 @@
 <?php
 namespace app\controllers;
 
-class NotFoundController
+class NotFoundController extends Controller
 {
     public function index()
     {
-        //dd('error 404');
-        \redirect('/404');
+        $this->view(
+            '/404',
+            [
+                'title' => 'Página não encontrada',
+            ]
+        );
     }
+
 }

@@ -43,7 +43,7 @@ class Pagination
 
         $this->totalPages  = ceil($this->totalItems / $this->itemsPerPage);
 
-        return "limit {$this->itemsPerPage} offset {$offset}";
+        return "LIMIT {$this->itemsPerPage} OFFSET {$offset}";
     }
 
     public function dump()
@@ -51,25 +51,31 @@ class Pagination
         return $this->calculations();
     }
 
+    public function getFootPage(): string
+    {
+        return "<div class='datatable-info'>Exibindo {$this->itemsPerPage} itens por página do total de {$this->totalItems} itens</div>";
+    }
+
     public function links()
     {
-        $links = "<ul class='pagination'>";
+        $links ="<nav class='datatable-pagination' aria-label='Page navigation'>
+        <ul class='pagination'>";
 
         if ($this->currentPage > 1) {
             $previous = $this->currentPage - 1;
             $linkPage = http_build_query(array_merge($_GET, [$this->pageIdentifier => $previous]));
             $first = http_build_query(array_merge($_GET, [$this->pageIdentifier => 1]));
-            $links.= "<li class='page-item'><a href='?{$linkPage}' class='page-link'>Anterior</a></li>";
-            $links.= "<li class='page-item'><a href='?{$first}' class='page-link'>Primeira</a></li>";
+            $links.= "<li class='datatable-pagination-list-item datatable-hidden datatable-disabled'><a href='?{$linkPage}' class='datatable-pagination-list-item-link'>Anterior</a></li>";
+            $links.= "<li class='datatable-pagination-list-item datatable-hidden datatable-disabled'><a href='?{$first}' class='datatable-pagination-list-item-link'>Primeira</a></li>";
         }
 
 
         // 3 - 5 =     7 + 5 = 12
         for ($i=$this->currentPage - $this->linksPerPage; $i <=$this->currentPage + $this->linksPerPage ; $i++) {
             if ($i > 0 && $i <= $this->totalPages) {
-                $class = $this->currentPage === $i ? 'active' : '';
+                $class = $this->currentPage === $i ? 'datatable-active' : '';
                 $linkPage = http_build_query(array_merge($_GET, [$this->pageIdentifier => $i]));
-                $links.="<li class='page-item {$class}'><a href='?{$linkPage}' class='page-link'>{$i}</a></li>";
+                $links.="<li class='datatable-pagination-list-item {$class}'><a href='?{$linkPage}' class='datatable-pagination-list-item-link'>{$i}</a></li>";
             }
         }
 
@@ -78,12 +84,12 @@ class Pagination
             $next = $this->currentPage + 1;
             $linkPage = http_build_query(array_merge($_GET, [$this->pageIdentifier => $next]));
             $last = http_build_query(array_merge($_GET, [$this->pageIdentifier => $this->totalPages]));
-            $links.= "<li class='page-item'><a href='?{$linkPage}' class='page-link'>Próxima</a></li>";
-            $links.= "<li class='page-item'><a href='?{$last}' class='page-link'>Última</a></li>";
+            $links.= "<li class='datatable-pagination-list-item datatable-hidden datatable-disabled'><a href='?{$linkPage}' class='datatable-pagination-list-item-link'>Próxima</a></li>";
+            $links.= "<li class='datatable-pagination-list-item datatable-hidden datatable-disabled'><a href='?{$last}' class='datatable-pagination-list-item-link'>Última</a></li>";
         }
 
-        $links.="</ul>";
-
+        $links.="</ul>
+        </nav>";
         return $links;
     }
 }

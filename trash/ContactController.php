@@ -18,6 +18,8 @@ class ContactController extends Controller
         $validate = new Validate;
         
         $validated = $validate->validate([
+            'name' => 'required',
+            'phone' => 'optional',
             'email' => 'email|required',
             'subject' => 'required',
             'message' => 'required'
@@ -30,10 +32,16 @@ class ContactController extends Controller
         // dd($validated);
 
         $email = new Email;
-        $sent = $email->from($validated['email'], 'Alexandre Cardoso')
-        ->to('xandecar@hotmail.com')
+        $sent = $email->from($validated['email'], $validated['name'])
+        ->to(env('EMAIL_SEND_TO'))
         ->message($validated['message'])
-        ->template('contact', ['name' => 'Alexandre' ])
+        ->template('contact', [
+            'name' => env('EMAIL_SEND_NAME'),
+            'fromName' => env('EMAIL_SEND_TO_NAME') ,
+            'fromEmail' => $validated['email'],
+            'fromPhone' => $validated['phone'],
+            'fromMessage' => $validated['message']
+            ])
         ->subject($validated['subject'])
         ->send();
 

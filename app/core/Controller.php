@@ -1,4 +1,5 @@
 <?php
+
 namespace app\core;
 
 use Exception;
@@ -11,7 +12,12 @@ class Controller
             throw new Exception("A rota está registrada com o formato errado");
         }
 
-        list($controller, $method) = explode('@', $router);
+        [$controller, $method] = explode('@', $router);
+
+        // PROTEGE ROTAS AQUI (exemplo básico)
+        if ($controller !== 'AuthController') {
+            \app\middleware\AuthMiddleware::handle(); // verifica se está logado
+        }
 
         // dd($controller, $method);
 
@@ -19,7 +25,7 @@ class Controller
 
         // dd($namespace);
 
-        $controllerNamespace = $namespace.$controller;
+        $controllerNamespace = $namespace . $controller;
 
         if (!class_exists($controllerNamespace)) {
             throw new Exception("O controller {$controllerNamespace} não existe");
