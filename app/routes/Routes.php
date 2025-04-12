@@ -42,6 +42,7 @@ class Routes
 
                 // Fornecedor
                 '/fornecedor' => 'FornecedorController@index',
+                '/fornecedor/show'=> 'FornecedorController@show',
                 '/fornecedor/create' => 'FornecedorController@create',
                 '/fornecedor/edit/[0-9]+' => 'FornecedorController@edit',
                 '/fornecedor/delete/[0-9]+' => 'FornecedorController@delete',
