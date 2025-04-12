@@ -21,6 +21,13 @@ class Routes
                 '/usuario/delete/[0-9]+' => 'UsuarioController@delete',
                 '/usuario/show/[0-9]+/[a-zA-Z]+' => 'UsuarioController@show',
 
+                // Categoria
+                '/categoria' => 'CategoriaController@index',
+                '/categoria/show' => 'CategoriaController@show',
+                '/categoria/create' => 'CategoriaController@create',
+                '/categoria/edit/[0-9]+' => 'CategoriaController@edit',
+                '/categoria/delete/[0-9]+'=> 'CategoriaController@delete',
+
                 // Permissão
                 '/permissao' => 'PermissoesController@index',
                 '/permissao/create' => 'PermissoesController@create',
@@ -28,6 +35,7 @@ class Routes
                 
                 // Fabricante
                 '/fabricante' => 'FabricanteController@index',
+                '/fabricante/show'=> 'FabricanteController@show',
                 '/fabricante/create' => 'FabricanteController@create',
                 '/fabricante/edit/[0-9]+' => 'FabricanteController@edit',
                 '/fabricante/delete/[0-9]+' => 'FabricanteController@delete',
@@ -58,7 +66,7 @@ class Routes
                 '/softwares' => 'SoftwaresController@index',
                 '/historico' => 'HistoricoMovimentacaoController@index',
                 '/log-sistema' => 'LogSistemaController@index',
-                '/categoria' => 'CategoriaController@index',
+                
 
                 // Fallback
                 '/404' => 'NotFoundController@index',
@@ -69,6 +77,9 @@ class Routes
 
                 // Usuário
                 '/usuario/save' => 'UsuarioController@save',
+
+                // Categoria
+                '/categoria/save'=> 'CategoriaController@save',
 
                 // Fabricante
                 '/fabricante/save' => 'FabricanteController@save',

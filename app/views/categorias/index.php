@@ -1,84 +1,86 @@
 <?php $this->layout('layout', ['title' => $title]) ?>
 
 <div class="row">
+    <!-- [ sample-page ] start -->
     <div class="col-sm-12">
-        <div class="card table-card">
-            <div class="card-header py-3 bg-white">
-                <div class="row">
+        <div class="card table-card user-profile-list">
+            <div class="card-header py-1 bg-white">
+                <div class="row py-3">
                     <div class="col-md-6">
-                        <h3><?= $title; ?></h3>
+                        <h3><?= $title ?></h3>
                     </div>
-                    <?php if (can(1, 'adicionar')): ?>
-                        <a href="/categoria/create" class="btn btn-primary" title="Cadastrar Categoria">Nova Categoria</a>
-                    <?php endif; ?>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <?php if (can($moduloId, 'adicionar')): ?>
+                            <a href="/categoria/create" class="btn btn-sm btn-primary" title="Cadastrar Usuário">Nova Categoria</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="datatable-top pt-3">
+                <div class="datatable-top py-0 ">
                     <div class="datatable-dropdown">
-                        <form action="/categoria" method="get">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <select class="form-control datatable-selector" name="items">
-                                        <option value="5" selected="">5</option>
-                                        <option value="10">10</option>
-                                        <option value="15">15</option>
-                                        <option value="20">20</option>
-                                        <option value="25">25</option>
-                                    </select>
-                                    <button class="btn btn-outline-secondary" type="submit">OK</button>
-                                </div>
-                                <small>Itens por página</small>
-                            </div>
+
+                        <form method="get" action="/categoria" class="form-search d-flex">
+                            <i class="ph-duotone ph-list-numbers icon-search"></i>
+                            <select class="form-control datatable-selector" name="items">
+                                <option value="5" <?= $itemPerPage == 5 ? 'selected' : '' ?>>5 Itens &nbsp;&nbsp;&nbsp; </option>
+                                <option value="10" <?= $itemPerPage == 10 ? 'selected' : '' ?>>10 Itens &nbsp;&nbsp;&nbsp; </option>
+                                <option value="15" <?= $itemPerPage == 15 ? 'selected' : '' ?>>15 Itens &nbsp;&nbsp;&nbsp; </option>
+                                <option value="20" <?= $itemPerPage == 20 ? 'selected' : '' ?>>20 Itens &nbsp;&nbsp;&nbsp; </option>
+                                <option value="25" <?= $itemPerPage == 25 ? 'selected' : '' ?>>25 Itens &nbsp;&nbsp;&nbsp; </option>
+                            </select>
+                            <button type="submit" class="btn btn-light-secondary btn-search"><i class="fas fa-check"></i></button>
                         </form>
                     </div>
                     <div class="datatable-search">
-                        <form method="get" action="/categoria" class="d-flex">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="search" placeholder="Pesquisar..." aria-label="Pesquisar..." aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
-                            </div>
+                        <form method="get" action="/categoria" class="form-search d-flex">
+                            <i class="ph-duotone ph-magnifying-glass icon-search"></i>
+                            <input type="search" name="search" class="form-control mr-3" placeholder="Pesquisar. . .">
+                            <button type="submit" class="btn btn-light-secondary btn-search"><i class="fas fa-check"></i></button>
                         </form>
                     </div>
                 </div>
-                <?= flash('success', 'toast') ?>
-                <?= flash('error', 'alert') ?>
-                <?= flash('success', 'alert') ?>
+                <?= $this->insert('partials/flash'); ?>
             </div>
-
             <div class="card-body table-card">
                 <div class="datatable-wrapper datatable-loading no-footer searchable fixed-columns">
                     <div class="datatable-container">
-                        <table class="table table-hover datatable-table" id="pc-dt-categorias">
+
+                        <table class="table table-hover datatable-table" id="pc-dt-simple">
                             <thead class="bg-dark">
                                 <tr>
-                                    <th style="color:white;">#</th>
-                                    <th style="color:white;">Nome</th>
-                                    <th class="text-center" style="color:white;">Status / Ação</th>
+                                    <th>#</th>
+                                    <th>CATEGORIA</th>
+                                    <th>SLUG</th>
+                                    <th>AÇÃO</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (empty($categorias)): ?>
-                                    <tr>
-                                        <td colspan="3" class="text-center">Nenhum registro encontrado.</td>
-                                    </tr>
-                                <?php else : ?>
-                                    <?php $i = 0;
-                                    foreach ($categorias as $cat): ?>
-                                        <tr data-index="<?= $i++; ?>">
-                                            <td><?= $cat->id; ?></td>
-                                            <td><?= $cat->nome; ?></td>
-                                            <td class="text-center">
-                                                <span class="badge bg-light-<?= $cat->status ? 'success' : 'danger'; ?>">
-                                                    <?= $cat->status ? 'ATIVO' : 'INATIVO'; ?>
-                                                </span>
+                                <?php $Cont = 0;
+                                if (!empty($categorias)) :
+                                    foreach ($categorias as $categoria) : ?>
+                                        <tr data-index="<?= $Cont; ?>">
+                                            <td><?= $this->e($categoria->id); ?></td>
+                                            <td>
+                                                <?= $this->e($categoria->nome); ?>
+                                                <a href="#" data-bs-toggle="tooltip" data-bs-title="<?= $this->e($categoria->descricao); ?>">
+                                                    <i class="ti ti-info-circle"></i>
+                                                </a>
+                                            </td>
+                                            <td><?= $this->e($categoria->slug); ?></td>
+                                            <td>
                                                 <div class="overlay-edit">
                                                     <ul class="list-inline me-auto mb-0">
-                                                        <li class="list-inline-item align-bottom">
-                                                            <a href="/categoria/edit/<?= $cat->id; ?>" class="avtar avtar-xs btn-link-success btn-pc-default" title="Editar">
-                                                                <i class="ti ti-edit-circle f-18"></i>
+                                                        <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" aria-label="Visualizar" data-bs-original-title="Visualizar">
+                                                            <a href="categoria/show" class="avtar avtar-xs btn-link-warning btn-pc-default btn-view" data-bs-toggle="modal" data-bs-target="#userModal">
+                                                                <i class="ti ti-eye f-18"></i>
                                                             </a>
                                                         </li>
                                                         <li class="list-inline-item align-bottom">
-                                                            <a href="/categoria/delete/<?= $cat->id; ?>" class="avtar avtar-xs btn-link-danger btn-pc-default btn-delete" title="Excluir">
+                                                            <a href="/categoria/edit/<?= $this->e($categoria->id); ?>" class="avtar avtar-xs btn-link-success btn-pc-default btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                                                                <i class="ti ti-edit-circle f-18"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" aria-label="Excluir" data-bs-original-title="Excluir">
+                                                            <a href="/categoria/delete/<?= $this->e($categoria->id); ?>" class="avtar avtar-xs btn-link-danger btn-pc-default btn-delete">
                                                                 <i class="ti ti-trash f-18"></i>
                                                             </a>
                                                         </li>
@@ -86,7 +88,12 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                    <?php $Cont++;
+                                    endforeach; ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center text-danger">Nenhuma categoria encontrada.</td>
+                                    </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
@@ -103,15 +110,15 @@
             </div>
         </div>
     </div>
+    <!-- [ sample-page ] end -->
 </div>
 
 <?php $this->push('css') ?>
-<link rel="stylesheet" href="<?= getenv('APP_URL') ?>/assets/css/pages/categoria.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <?php $this->end() ?>
 
 <?php $this->push('scripts') ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="<?= getenv('APP_URL') ?>/assets/js/pages/categoria.js"></script>
+<script src="<?= getenv('APP_URL') ?>/assets/js/pages/pg_user.js"></script>
 <?php $this->end() ?>

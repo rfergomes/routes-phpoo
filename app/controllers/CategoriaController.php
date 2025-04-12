@@ -15,7 +15,6 @@ class CategoriaController extends Controller
     protected $categoria;
     protected string $viewFolder = 'categorias';
     protected int $moduloId = 3;
-    protected string $moduloName = 'categorias';
 
     public function __construct()
     {
@@ -25,82 +24,103 @@ class CategoriaController extends Controller
     {
         PermissionMiddleware::check($this->moduloId, 'ver');
         $search = filter_input(INPUT_GET, "search", FILTER_SANITIZE_SPECIAL_CHARS);
-        $itemPerpage = filter_input(INPUT_GET, "items", FILTER_SANITIZE_SPECIAL_CHARS);
+        $itemPerpage = filter_input(INPUT_GET, "items", FILTER_SANITIZE_SPECIAL_CHARS) ?? 10;
 
-        $filters = new Filters;
+        $filters = new Filters();
         if ($search) {
-            $filters->where('descricao', 'LIKE', $search, 'or');
-            $filters->where('nome', 'LIKE', $search);
+            $filters->where('nome', 'LIKE', $search, 'OR');
+            $filters->where('slug', 'LIKE', $search);
         }
 
-        //$filters->join('posts', 'users.id', '=', 'posts.user_id', 'left join');
-
-        $pagination = new Pagination;
-        $pagination->setItemsPerPage(20);
+        $pagination = new Pagination();
+        $pagination->setItemsPerPage($itemPerpage);
 
         $this->categoria->setFilters($filters);
         $this->categoria->setPagination($pagination);
         $categorias = $this->categoria->fetchAll();
 
-        //var_dump($usersFound);
-        //die();
-
-        $this->view('/categorias/index', 
-        [
-            'title' => 'Home', 
-            'categorias' => $categorias, 
-            'pagination' => $pagination
-        ]);
+        $this->view(
+            '/categorias/index',
+            [
+                'title' => ucfirst($this->viewFolder),
+                'categorias' => $categorias,
+                'pagination' => $pagination,
+                'moduloId' => $this->moduloId,
+                'itemPerPage' => $itemPerpage
+            ]
+        );
     }
     public function create()
     {
-        PermissionMiddleware::check($this->moduloId, 'criar');
+        PermissionMiddleware::check($this->moduloId, 'adicionar');
 
-        $this->view('categorias/create');
-    }
-    public function store()
-    {
-        PermissionMiddleware::check(1, 'criar');
-
-        $validate = new Validate;
-        $validated = $validate->validate([
-            'nome' => 'required|maxLen:100',
-            'descricao' => 'optional',
+        $this->view('categorias/create', [
+            'title' =>  ucfirst($this->viewFolder),
         ]);
-
-        if (!$validated) {
-            redirect('/categorias/create', 'danger', 'Preencha os campos corretamente.');
-        }
-
-        $data['data_cad'] = date('Y-m-d H:i:s');
-
-        $this->categoria->create($data);
-        redirect('/categoria', 'success', 'Categoria cadastrada com sucesso!');
     }
+
     public function edit($id)
     {
         PermissionMiddleware::check($this->moduloId, 'editar');
 
-        $categoria = $this->categoria->findBy('id', $id);
+        $categoria = $this->categoria->findBy('id', $id[0]);
 
-        echo $this->view('categorias/edit', ['categoria' => $categoria]);
+        echo $this->view('categorias/edit', [
+            'title' =>  ucfirst($this->viewFolder),
+            'categoria' => $categoria
+        ]);
     }
-    public function update()
+
+
+    public function save()
     {
-        PermissionMiddleware::check(1, 'editar');
+        PermissionMiddleware::check($this->moduloId, 'editar');
+        PermissionMiddleware::check($this->moduloId, 'adicionar');
+        $validate = new Validate;
+        $validated = $validate->validate([
+            'id' => 'optional',
+            'nome' => 'required',
+            'slug' => 'required',
+            'descricao' => 'required'
+        ], persistInputs: true);
 
-        // Validate and update the categoria data
-        // $this->categoria->update($data);
+        $inputs = $validate->getInputs();
+        $id = $inputs['id'];
 
-        redirect('/categorias');
+        if (!$validated) {
+            return redirect($id > 0 ? "/categoria/edit/{$id}" : "/categoria/create", 'warning', 'Verifique os campos obrigatórios');
+        }
+
+        if ($id) {
+            // Editar Módulo
+            $result = $this->categoria->update('id', $id, $validated);
+            return redirect(
+                '/categoria',
+                $result ? 'success' : 'danger',
+                $result ? 'Categoria atualizada com sucesso!' : 'Falha ao atualizar Categoria'
+            );
+        } else {
+            // Cadastrar Módulo
+            $result = $this->categoria->create($validated);
+            return redirect(
+                '/categoria',
+                $result ? 'success' : 'danger',
+                $result ? 'Categoria Adicionada com sucesso!' : 'Falha ao adicionar Categoria'
+            );
+        }
     }
+
     public function delete($id)
     {
-        PermissionMiddleware::check($this->moduloId, 'deletar');
+        PermissionMiddleware::check($this->moduloId, 'excluir');
 
-        $this->categoria->delete($id);
+        $result = $this->categoria->delete('id', $id[0]);
+        return redirect(
+            '/categoria',
+            $result ? 'success' : 'danger',
+            $result ? 'Categoria Excluída com sucesso!' : 'Falha ao excluir Categoria'
+        );
 
-        redirect('/categorias');
     }
     public function show($id)
     {

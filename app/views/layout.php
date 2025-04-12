@@ -143,7 +143,30 @@
         layout_rtl_change('false');
         preset_change("preset-1");
     </script>
+    <script>
+        $('.btn-delete').click(function(e) {
+            e.preventDefault(); // Evita a ação padrão do botão
 
+            var userId = $(this).data('id'); // Obtém o ID do Módulo (caso necessário)
+            var deleteUrl = $(this).attr('href'); // URL de exclusão
+
+            Swal.fire({
+                title: "Tem certeza?",
+                text: "Essa ação não pode ser desfeita!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sim, excluir!",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redireciona para a URL de exclusão
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
