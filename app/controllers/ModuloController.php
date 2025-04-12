@@ -8,6 +8,7 @@ use app\support\Validate;
 use app\database\Pagination;
 use app\Controllers\Controller;
 use app\database\models\Modulo;
+use app\database\models\Permission;
 use app\database\models\Usuario;
 use app\middleware\PermissionMiddleware;
 
@@ -44,7 +45,7 @@ class ModuloController extends Controller
             'modulos' => $modulos,
             'pagination' => $pagination,
             'count' => $count,
-            'itemPerPage'=>$itemPerpage
+            'itemPerPage' => $itemPerpage
         ]);
     }
     public function create()
@@ -107,6 +108,17 @@ class ModuloController extends Controller
         } else {
             // Cadastrar Módulo
             $result = $this->modulo->create($validated);
+            if ($result) {
+                $permissao = new Permission();
+                $permissao->create([
+                    'nivel_id' => 1,
+                    'modulo_id' => $result,
+                    'pode_ver' => 1,
+                    'pode_editar' => 1,
+                    'pode_adicionar' => 1,
+                    'pode_excluir' => 1,
+                ]);
+            }
             return redirect(
                 '/modulo',
                 $result ? 'success' : 'danger',

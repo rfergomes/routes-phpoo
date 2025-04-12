@@ -59,6 +59,12 @@ class Routes
                 '/modulo/edit/[0-9]+' => 'ModuloController@edit',
                 '/modulo/delete/[0-9]+' => 'ModuloController@delete',
                 '/modulo/show/[0-9]+' => 'ModuloController@show',
+
+                // Níveis de permissão
+                '/nivel'=> 'NivelController@index',
+                '/nivel/create'=>  'NivelController@create',
+                '/nivel/edit/[0-9]+'=> 'NivelController@edit',
+                '/nivel/delete/[0-9]+'=>  'NivelController@delete',
                 
                 // Outros controllers (adicione conforme necessário)
                 '/emprestimo' => 'EmprestimoController@index',
@@ -90,6 +96,9 @@ class Routes
 
                 // Módulo
                 '/modulo/save'=> 'ModuloController@save',
+
+                // Nível
+                '/nivel/save'=> 'NivelController@save',
 
                 // Permissão
                 '/permissao/save'=> 'PermissoesController@save',

@@ -32,21 +32,26 @@ abstract class Model
   }
 
   public function create(array $data)
-  {
+{
     try {
-      $sql = "INSERT INTO {$this->table} (";
-      $sql .= implode(',', array_keys($data)) . ") VALUES(";
-      $sql .= ':' . implode(',:', array_keys($data)) . ")";
+        $sql = "INSERT INTO {$this->table} (";
+        $sql .= implode(',', array_keys($data)) . ") VALUES(";
+        $sql .= ':' . implode(',:', array_keys($data)) . ")";
 
-      $connect = Connection::connect();
+        $connect = Connection::connect();
+        $prepare = $connect->prepare($sql);
 
-      $prepare = $connect->prepare($sql,$data);
+        if ($prepare->execute($data)) {
+            return $connect->lastInsertId(); // Retorna o ID gerado
+        }
 
-      return $prepare->execute($data);
+        return false; // Caso não insira nada
     } catch (PDOException $e) {
-      var_dump($e->getMessage());
+        var_dump($e->getMessage());
+        return false;
     }
-  }
+}
+
 
 
   // $user->update('id', 22,['firstName' => 'alexa'])
