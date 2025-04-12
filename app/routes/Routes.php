@@ -53,6 +53,13 @@ class Routes
                 '/transferencia/edit/[0-9]+' => 'TransferenciaController@edit',
                 '/transferencia/delete/[0-9]+' => 'TransferenciaController@delete',
 
+                // Localizações
+                '/localizacao' => 'LocalizacaoController@index',
+                '/localizacao/create' => 'LocalizacaoController@create',
+                '/localizacao/edit/[0-9]+' => 'LocalizacaoController@edit',
+                '/localizacao/delete/[0-9]+' => 'LocalizacaoController@delete',
+                '/localizacao/show/[0-9]+' => 'LocalizacaoController@show',
+
                 //Módulos
                 '/modulo' => 'ModuloController@index',
                 '/modulo/create' => 'ModuloController@create',
@@ -93,6 +100,9 @@ class Routes
 
                 // Fornecedor
                 '/fornecedor/save' => 'FornecedorController@save',
+
+                // Localização
+                '/localizacao/save' => 'LocalizacaoController@save',
 
                 // Módulo
                 '/modulo/save'=> 'ModuloController@save',
