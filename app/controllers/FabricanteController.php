@@ -14,6 +14,7 @@ class FabricanteController extends Controller
     protected $fabricante;
     protected string $viewFolder = 'fabricantes';
     protected int $moduloId = 5;
+    protected string $moduloName = 'fabricante';
 
     public function __construct()
     {
@@ -40,7 +41,7 @@ class FabricanteController extends Controller
         $fabricantes = $this->fabricante->fetchAll();
 
         $this->view(
-            '/fabricantes/index',
+            "{$this->viewFolder}/index",
             [
                 'title' => ucfirst($this->viewFolder),
                 'fabricantes' => $fabricantes,
@@ -91,14 +92,14 @@ class FabricanteController extends Controller
         $id = $inputs['id'];
 
         if (!$validated) {
-            return redirect($id > 0 ? "/fabricante/edit/{$id}" : "/fabricante/create", 'warning', 'Verifique os campos obrigatórios');
+            return redirect($id > 0 ? "/{$this->moduloName}/edit/{$id}" : "/{$this->moduloName}/create", 'warning', 'Verifique os campos obrigatórios');
         }
 
         if ($id) {
             // Editar Módulo
             $result = $this->fabricante->update('id', $id, $validated);
             return redirect(
-                '/fabricante',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Fabricante atualizada com sucesso!' : 'Falha ao atualizar Fabricante'
             );
@@ -106,7 +107,7 @@ class FabricanteController extends Controller
             // Cadastrar Módulo
             $result = $this->fabricante->create($validated);
             return redirect(
-                '/fabricante',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Fabricante Adicionada com sucesso!' : 'Falha ao adicionar fabricante'
             );
@@ -119,7 +120,7 @@ class FabricanteController extends Controller
 
         $result = $this->fabricante->delete('id', $id[0]);
         return redirect(
-            '/fabricante',
+            "/{$this->moduloName}",
             $result ? 'success' : 'danger',
             $result ? 'Fabricante Excluída com sucesso!' : 'Falha ao excluir Fabricante'
         );

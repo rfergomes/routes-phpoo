@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <h1>Home (<?= $pagination->getTotal(); ?>)</h1>
 

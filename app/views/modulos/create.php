@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <?php $this->push('css') ?>
 <link rel="stylesheet" href="<?= getenv('APP_URL') ?>/assets/css/pages/modulo.css">

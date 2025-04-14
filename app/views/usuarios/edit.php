@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <?php $this->push('css') ?>
 <link rel="stylesheet" href="<?= getenv('APP_URL') ?>/assets/css/pages/user.css">
@@ -83,10 +83,10 @@
                                 <label class="form-label">Senha</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="feather icon-lock"></i></span>
-                                    <input type="password" class="form-control" name="password" id="password" required data-bouncer-message="<?php echo flash('password') ?>" placeholder="Digite sua senha"><br>
+                                    <input type="password" class="form-control" name="senha" id="senha" required data-bouncer-message="<?php echo flash('senha') ?>" placeholder="Digite sua senha"><br>
                                 </div>
-                                <?php if (isset($_SESSION['password'])) {
-                                    echo flash('password', 'field');
+                                <?php if (isset($_SESSION['senha'])) {
+                                    echo flash('senha', 'field');
                                 } ?>
                             </div>
                         </div>

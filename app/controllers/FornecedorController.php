@@ -14,6 +14,7 @@ class FornecedorController extends Controller
     protected  $fornecedor;
     protected string $viewFolder = 'fornecedores';
     protected int $moduloId = 6;
+    protected string $moduloName = 'fornecedor';
     public function __construct()
     {
         $this->fornecedor = new Fornecedor();
@@ -92,14 +93,14 @@ class FornecedorController extends Controller
         $id = $inputs['id'];
 
         if (!$validated) {
-            return redirect($id > 0 ? "/fornecedor/edit/{$id}" : "/fornecedor/create", 'warning', 'Verifique os campos obrigatórios');
+            return redirect($id > 0 ? "/{$this->moduloName}/edit/{$id}" : "/{$this->moduloName}/create", 'warning', 'Verifique os campos obrigatórios');
         }
 
         if ($id) {
             // Editar Módulo
             $result = $this->fornecedor->update('id', $id, $validated);
             return redirect(
-                '/fornecedor',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Fornecedor atualizada com sucesso!' : 'Falha ao atualizar Fornecedor'
             );
@@ -107,7 +108,7 @@ class FornecedorController extends Controller
             // Cadastrar Módulo
             $result = $this->fornecedor->create($validated);
             return redirect(
-                '/fornecedor',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Fornecedor Adicionada com sucesso!' : 'Falha ao adicionar Fornecedor'
             );
@@ -120,7 +121,7 @@ class FornecedorController extends Controller
 
         $result = $this->fornecedor->delete('id', $id[0]);
         return redirect(
-            '/fornecedor',
+            "/{$this->moduloName}",
             $result ? 'success' : 'danger',
             $result ? 'Fornecedor Excluída com sucesso!' : 'Falha ao excluir Fornecedor'
         );
@@ -129,7 +130,7 @@ class FornecedorController extends Controller
     public function show()
     {
 
-        $this->view('fornecedores/show',[
+        $this->view("{$this->viewFolder}/show",[
             'title'=> $this->viewFolder,
         ]);
     }

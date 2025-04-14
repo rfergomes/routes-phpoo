@@ -63,11 +63,9 @@ class UsuarioController extends Controller
 
         $id = $params[0];
         $filters = new Filters;
-        $filters->join('user_groups', 'users.user_level', '=', 'user_groups.group_level', 'left join');
-        $filters->where('users.id', '=', $id);
+        $filters->where('id', '=', $id);
         $filters->limit(1);
 
-        $this->usuario->setFields('users.id, name, username, password, user_level, group_name, image, status, last_login');
         $this->usuario->setFilters($filters);
         $usersFound = $this->usuario->fetchAll();
 
@@ -87,10 +85,9 @@ class UsuarioController extends Controller
 
         $validated = $validate->validate([
             'id' => 'optional',
-            'username' => 'required',
-            'name' => 'required',
+            'nome' => 'required',
             'email' => 'email|required|unique:' . Usuario::class,
-            'password' => 'required|maxLen:5|minLen:3',
+            'senha' => 'required|maxLen:5|minLen:3',
             'nivel_id' => 'required',
             'status' => 'required'
         ], persistInputs: true);
@@ -102,7 +99,7 @@ class UsuarioController extends Controller
             return redirect($id > 0 ? "/usuario/edit/{$id}" : "/usuario/create");
         }
 
-        $validated['password'] = password_hash($validated['password'], PASSWORD_DEFAULT);
+        $validated['senha'] = password_hash($validated['senha'], PASSWORD_DEFAULT);
 
         if ($validated['id'] > 0) {
             $result = $this->usuario->update('id', $validated['id'], $validated);

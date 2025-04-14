@@ -1,5 +1,5 @@
 
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <div class="row">
     <!-- [ sample-page ] start -->
@@ -208,10 +208,10 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" name="password"
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha"
                                 placeholder="Senha">
-                            <div class="error-message" id="error-password"></div>
+                            <div class="error-message" id="error-senha"></div>
                         </div>
                     </div>
 

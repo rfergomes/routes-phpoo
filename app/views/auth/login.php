@@ -17,9 +17,9 @@
                                 } ?>
                             </div>
                             <div class="form-group mb-4">
-                                <input type="password" name="password" class="form-control" placeholder="Senha" required>
-                                <?php if (isset($_SESSION['password'])) {
-                                    echo flash('password', 'field');
+                                <input type="senha" name="senha" class="form-control" placeholder="Senha" required>
+                                <?php if (isset($_SESSION['senha'])) {
+                                    echo flash('senha', 'field');
                                 } ?>
                             </div>
                             <button type="submit" class="btn btn-primary shadow-2 mb-4 w-100">Entrar</button>

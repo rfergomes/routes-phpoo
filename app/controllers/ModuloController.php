@@ -16,6 +16,7 @@ class ModuloController extends Controller
 {
     protected $modulo;
     protected $moduloId = 12;
+    protected string $moduloName = "modulo";
     protected $viewFolder = 'modulos';
     public function __construct()
     {
@@ -39,8 +40,8 @@ class ModuloController extends Controller
         $modulos = $this->modulo->fetchAll();
         $count = $this->modulo->count();
 
-        $this->view('modulos/index', [
-            'title' => 'Módulos',
+        $this->view("{$this->viewFolder}/index", [
+            'title' => ucfirst($this->viewFolder),
             'moduloId' => $this->moduloId,
             'modulos' => $modulos,
             'pagination' => $pagination,
@@ -51,7 +52,7 @@ class ModuloController extends Controller
     public function create()
     {
         PermissionMiddleware::check($this->moduloId, 'adicionar');
-        $this->view('modulos/create', [
+        $this->view("{$this->viewFolder}/create", [
             'title' => 'Criar Módulo',
         ]);
     }
@@ -71,7 +72,7 @@ class ModuloController extends Controller
             return redirect("/404");
         }
 
-        $this->view('modulos/edit', [
+        $this->view("{$this->viewFolder}/edit", [
             'title' => 'Editar Módulo',
             'moduloId' => $id,
             'modulo' => $modulo
@@ -94,14 +95,14 @@ class ModuloController extends Controller
         $id = $inputs['id'];
 
         if (!$validated) {
-            return redirect($id > 0 ? "/modulo/edit/{$id}" : "/modulo/create", 'warning', 'Verifique os campos obrigatórios');
+            return redirect($id > 0 ? "/{$this->moduloName}/edit/{$id}" : "/{$this->moduloName}/create", 'warning', 'Verifique os campos obrigatórios');
         }
 
         if ($id) {
             // Editar Módulo
             $result = $this->modulo->update('id', $id, $validated);
             return redirect(
-                '/modulo',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Módulo atualizado com sucesso!' : 'Falha ao cadastrar Módulo'
             );
@@ -120,7 +121,7 @@ class ModuloController extends Controller
                 ]);
             }
             return redirect(
-                '/modulo',
+                "/{$this->moduloName}",
                 $result ? 'success' : 'danger',
                 $result ? 'Módulo Adicionado com sucesso!' : 'Falha ao adicionar Módulo'
             );
@@ -136,7 +137,7 @@ class ModuloController extends Controller
 
         $result = $this->modulo->delete('id', $params[0]);
         return redirect(
-            '/modulo',
+            "/{$this->moduloName}",
             $result ? 'success' : 'danger',
             $result ? 'Módulo excluído com sucesso!' : 'Falha ao excluir o Módulo'
         );

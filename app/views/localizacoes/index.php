@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <div class="row">
     <!-- [ sample-page ] start -->
@@ -7,7 +7,7 @@
             <div class="card-header py-1 bg-white">
                 <div class="row py-3">
                     <div class="col-md-6">
-                        <h3><?= $title ?></h3>
+                        <h3><?= $this->e($title); ?></h3>
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <?php if (can($moduloId, 'adicionar')): ?>

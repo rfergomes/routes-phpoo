@@ -14,6 +14,7 @@ class LocalizacaoController extends Controller
     protected  $localizacao;
     protected string $viewFolder = 'localizacoes';
     protected int $moduloId = 6;
+    protected string $moduloNome = 'localizacao';
     public function __construct()
     {
         $this->localizacao = new localizacao();
@@ -45,7 +46,8 @@ class LocalizacaoController extends Controller
                 'localizacoes' => $localizacoes,
                 'pagination' => $pagination,
                 'moduloId' => $this->moduloId,
-                'itemPerPage' => $itemPerpage
+                'itemPerPage' => $itemPerpage,
+                'breadcrumb'=>breadcrumb()
             ]
         );
     }

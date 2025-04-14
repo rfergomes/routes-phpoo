@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]) ?>
+<?php $this->layout('layouts/layout', ['title' => $title]) ?>
 
 <?php $this->push('css') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -83,10 +83,10 @@
                                 <label class="form-label">Senha</label>
                                 <div class="input-group ">
                                     <span class="input-group-text "><i class="feather icon-lock"></i></span>
-                                    <input type="password" class="form-control <?= isset($_SESSION['password']) ? 'is-invalid' : '' ?>" name="password" id="password" placeholder="Digite sua senha">
+                                    <input type="password" class="form-control <?= isset($_SESSION['senha']) ? 'is-invalid' : '' ?>" name="senha" id="senha" placeholder="Digite sua senha">
                                 </div>
-                                <?php if (isset($_SESSION['password'])) {
-                                    echo flash('password', 'field');
+                                <?php if (isset($_SESSION['senha'])) {
+                                    echo flash('senha', 'field');
                                 } ?>
                             </div>
                         </div>

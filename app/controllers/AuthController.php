@@ -38,7 +38,7 @@ class AuthController extends Controller
 
         $validated = $validate->validate([
             'email' => 'email|required',
-            'password' => 'required|maxLen:5|minLen:3',
+            'senha' => 'required|maxLen:5|minLen:3',
         ], persistInputs: true);
 
         if (!$validated) {
@@ -47,11 +47,11 @@ class AuthController extends Controller
 
         $user= $this->usuario->findBy('email', $validated['email']);
 
-        if (!$user || !password_verify($validated['password'], $user->password)) {
+        if (!$user || !password_verify($validated['senha'], $user->senha)) {
             flash::set('danger', 'Email ou senha inválidos');
             return redirect('/login');
         }
-        unset($user->password);
+        unset($user->senha);
 
         $perm = new Permission();
         $permissions = $perm->getPermissionsByLevel($user->nivel_id);

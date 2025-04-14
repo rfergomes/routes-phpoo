@@ -29,8 +29,6 @@ class ContactController extends Controller
             return redirect('/contact');
         }
 
-        // dd($validated);
-
         $email = new Email;
         $sent = $email->from($validated['email'], $validated['name'])
         ->to(env('EMAIL_SEND_TO'))

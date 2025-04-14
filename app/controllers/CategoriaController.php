@@ -15,6 +15,7 @@ class CategoriaController extends Controller
     protected $categoria;
     protected string $viewFolder = 'categorias';
     protected int $moduloId = 3;
+    protected string $modulo='categoria';
 
     public function __construct()
     {
@@ -40,7 +41,7 @@ class CategoriaController extends Controller
         $categorias = $this->categoria->fetchAll();
 
         $this->view(
-            '/categorias/index',
+            "{$this->viewFolder}/index",
             [
                 'title' => ucfirst($this->viewFolder),
                 'categorias' => $categorias,
@@ -54,7 +55,7 @@ class CategoriaController extends Controller
     {
         PermissionMiddleware::check($this->moduloId, 'adicionar');
 
-        $this->view('categorias/create', [
+        $this->view("{$this->viewFolder}/create", [
             'title' =>  ucfirst($this->viewFolder),
         ]);
     }
@@ -65,7 +66,7 @@ class CategoriaController extends Controller
 
         $categoria = $this->categoria->findBy('id', $id[0]);
 
-        echo $this->view('categorias/edit', [
+        echo $this->view("{$this->viewFolder}\edit", [
             'title' =>  ucfirst($this->viewFolder),
             'categoria' => $categoria
         ]);
@@ -88,14 +89,14 @@ class CategoriaController extends Controller
         $id = $inputs['id'];
 
         if (!$validated) {
-            return redirect($id > 0 ? "/categoria/edit/{$id}" : "/categoria/create", 'warning', 'Verifique os campos obrigatórios');
+            return redirect($id > 0 ? "/{$this->modulo}/edit/{$id}" : "/{$this->modulo}/create", 'warning', 'Verifique os campos obrigatórios');
         }
 
         if ($id) {
             // Editar Módulo
             $result = $this->categoria->update('id', $id, $validated);
             return redirect(
-                '/categoria',
+                "/{$this->modulo}",
                 $result ? 'success' : 'danger',
                 $result ? 'Categoria atualizada com sucesso!' : 'Falha ao atualizar Categoria'
             );
@@ -103,7 +104,7 @@ class CategoriaController extends Controller
             // Cadastrar Módulo
             $result = $this->categoria->create($validated);
             return redirect(
-                '/categoria',
+                "/{$this->modulo}",
                 $result ? 'success' : 'danger',
                 $result ? 'Categoria Adicionada com sucesso!' : 'Falha ao adicionar Categoria'
             );
@@ -116,7 +117,7 @@ class CategoriaController extends Controller
 
         $result = $this->categoria->delete('id', $id[0]);
         return redirect(
-            '/categoria',
+            "/{$this->modulo}",
             $result ? 'success' : 'danger',
             $result ? 'Categoria Excluída com sucesso!' : 'Falha ao excluir Categoria'
         );
@@ -128,6 +129,6 @@ class CategoriaController extends Controller
 
         $categoria = $this->categoria->findBy('id', $id);
 
-        echo $this->view('categorias/show', ['categoria' => $categoria]);
+        echo $this->view("/{$this->modulo}/show", ['categoria' => $categoria]);
     }
 }

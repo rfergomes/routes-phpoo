@@ -1,5 +1,7 @@
 <?php
 
+use app\support\Uri;
+
 function arrayIsAssociative(array $arr)
 {
     return array_keys($arr) !== range(0, count($arr) - 1);
@@ -22,6 +24,44 @@ function dd($data)
     echo '<strong>Debug:</strong> <br>';
     echo '<pre>';
     print_r($data);
-    echo'</pre></div>';
+    echo '</pre></div>';
     die();
 }
+
+function breadcrumb(): array
+{
+    $uri = trim(Uri::get(), '/');
+
+    if (empty($uri)) return [];
+
+    $segments = explode('/', $uri);
+    $breadcrumbs = [];
+    $path = '';
+
+    // Mapeamento de nomes amigáveis
+    $map = [
+        'dashboard' => 'Painel',
+        'usuarios'  => 'Usuários',
+        'create'    => 'Novo',
+        'edit'      => 'Editar',
+        'show'      => 'Detalhes',
+        'config'    => 'Configurações',
+    ];
+
+    foreach ($segments as $segment) {
+        // Ignora IDs numéricos
+        if (is_numeric($segment)) continue;
+
+        $path .= '/' . $segment;
+
+        $label = $map[$segment] ?? ucfirst(str_replace(['-', '_'], ' ', $segment));
+
+        $breadcrumbs[] = [
+            'label' => $label,
+            'url' => $path
+        ];
+    }
+
+    return $breadcrumbs;
+}
+

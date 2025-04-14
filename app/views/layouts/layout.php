@@ -59,19 +59,30 @@
     <div class="pc-container">
         <div class="pc-content">
             <!-- [ breadcrumb ] start -->
+            <?php $breadcrumb = breadcrumb(); ?>
             <div class="page-header">
                 <div class="page-block">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-sm-auto">
                             <div class="page-header-title">
-                                <h5 class="mb-0"><?= $this->e($title) ?></h5>
+                                <h5 class="m-b-10"><?= end($breadcrumb)['label'] ?? 'Dashboard' ?></h5>
                             </div>
                         </div>
                         <div class="col-sm-auto">
+
+                            <?php $breadcrumb ?>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="../navigation/index.html"><i
-                                            class="ph-duotone ph-house"></i></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><?= $this->e($title) ?></li>
+                                <li class="breadcrumb-item">
+                                    <a href="/"><i class="feather icon-home"></i></a>
+                                </li>
+
+                                <?php foreach ($breadcrumb as $index => $item): ?>
+                                    <?php if ($index === array_key_last($breadcrumb)): ?>
+                                        <li class="breadcrumb-item active"><?= $item['label'] ?></li>
+                                    <?php else: ?>
+                                        <li class="breadcrumb-item"><a href="<?= $item['url'] ?>"><?= $item['label'] ?></a></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                     </div>

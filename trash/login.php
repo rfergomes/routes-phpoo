@@ -18,12 +18,12 @@
       <?php echo getToken(); ?>
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="email" name="email" required autofocus>
+        <input type="email" class="form-control" id="email" name="email" required autofocus value="admin@admin.com.br">
       </div>
 
       <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="password" name="password" required>
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="senha" name="senha" required value="123">
       </div>
 
       <div class="d-grid">

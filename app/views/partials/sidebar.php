@@ -123,11 +123,11 @@
                              </span>
                              <span class="pc-mtext">Categorias</span>
                          </a></li>
-                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/departamento" class="pc-link">
+                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/localizacao" class="pc-link">
                              <span class="pc-micon">
                                  <i class="ph-duotone ph-chart-pie"></i>
                              </span>
-                             <span class="pc-mtext">Departamentos</span>
+                             <span class="pc-mtext">Localizações</span>
                          </a>
                      <li class="pc-item"> <a href="<?= getenv('APP_URL') ?>/fabricante" class="pc-link">
                              <span class="pc-micon">

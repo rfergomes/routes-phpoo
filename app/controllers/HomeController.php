@@ -13,14 +13,14 @@ class HomeController extends Controller
   {
     
      $filters = new Filters;
-     $filters->where('users.id', '>', 0);
+     $filters->where('id', '>', 0);
      //$filters->join('posts', 'users.id', '=', 'posts.user_id', 'left join');
 
      $pagination = new Pagination;
      $pagination->setItemsPerPage(20);
 
      $user = new usuario;
-     $user->setFields('users.id,name,username, status');
+
      $user->setFilters($filters);
      $user->setPagination($pagination);
      $usersFound = $user->fetchAll();
