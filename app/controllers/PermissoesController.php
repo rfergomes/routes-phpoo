@@ -17,7 +17,7 @@ class PermissoesController extends Controller
    protected $modulo;
    protected $nivel;
    protected $moduloId = 13;
-   protected $moduloName = 'permissoes';
+   protected $moduloName = 'permissions';
    protected $viewFolder = 'permissoes';
    public function __construct()
    {
@@ -34,6 +34,7 @@ class PermissoesController extends Controller
 
       $filters->where('nivel_id', '=', $nivel_id);
       $filters->join('modulos', 'modulos.id', '=', 'permissions.modulo_id', 'left join');
+      $filters->orderBy('nome','ASC');
 
       $this->permissao = new Permission();
       $this->permissao->setFields('permissions.*, modulos.nome as modulo_nome');
@@ -41,7 +42,6 @@ class PermissoesController extends Controller
       $permissoes = $this->permissao->fetchAll();
       $this->nivel = new Nivel();
       $niveis = $this->nivel->fetchAll();
-
 
       return $this->view("{$this->viewFolder}/index", [
          'title' => 'Permissões',
@@ -51,64 +51,6 @@ class PermissoesController extends Controller
       ]);
    }
 
-   public function save()
-   {
-
-      $inputs = Request::all();
-      $validated = new Validate();
-      $nivel_id = $inputs['nivel_id'];
-      $dados = $inputs['permissoes'];
-
-      $this->permissao = new Permission();
-
-      // Limpa permissões atuais
-      //$this->permissao->deleteWhere(['nivel_id' => $nivel_id]);
-
-      // Insere as novas permissões
-      foreach ($dados as $modulo_id => $acoes) {
-         $filters = (new Filters())
-            ->where('nivel_id', '=', $nivel_id, 'and')
-            ->where('modulo_id', '=', $modulo_id);
-
-         $this->permissao->setFilters($filters);
-
-         $exists = $this->permissao->fetchAll();
-         $msg = '';
-         if ($exists) {
-            // Edita
-            $this->permissao->update('id', $exists[0]->id, [
-               'pode_ver' => isset($acoes['ver']) ? 1 : 0,
-               'pode_editar' => isset($acoes['editar']) ? 1 : 0,
-               'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
-               'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
-            ]);
-            // Redirecionar com sucesso
-            redirect("/permissao?nivel_id=$nivel_id", 'success', 'Permissões atualizadas com sucesso!');
-         } else {
-            // Adiciona
-            $this->permissao->create([
-               'nivel_id' => $nivel_id,
-               'modulo_id' => $modulo_id,
-               'pode_ver' => isset($acoes['ver']) ? 1 : 0,
-               'pode_editar' => isset($acoes['editar']) ? 1 : 0,
-               'pode_adicionar' => isset($acoes['adicionar']) ? 1 : 0,
-               'pode_excluir' => isset($acoes['excluir']) ? 1 : 0,
-            ]);
-            // Redirecionar com sucesso
-            redirect("/permissao?nivel_id=$nivel_id", 'success', 'Permisão adicionada com sucesso!');
-         }
-      }
-   }
-
-   /* Exemplo de uso
-   $filters = (new Filters())
-      ->where('users.age', '>', 18)
-      ->where('users.name', 'LIKE', 'rodrigo')
-      ->join('orders', 'users.id', '=', 'orders.user_id')
-      ->orderBy('users.created_at', 'DESC')
-      ->limit(10);
-   */
-
    public function create()
    {
       PermissionMiddleware::check($this->moduloId, 'adicionar');
@@ -116,25 +58,7 @@ class PermissoesController extends Controller
       $this->nivel = new Nivel();
       $niveis = $this->nivel->fetchAll();
 
-      $this->permissao = new Permission();
-      $this->permissao->setFields('modulo_id');
-      $permissoes = $this->permissao->fetchAll();
-
-      $lista_ids = $lista_ids = implode(',', array_map(fn($p) => $p->modulo_id, $permissoes));
-
       $this->modulo = new Modulo();
-      $filters = (new Filters())
-         ->where('id', 'NOT IN', [$lista_ids])
-         ->orderBy('id', 'ASC');
-
-      /*
-      $sql = $filters->dump();
-      $binds = $filters->getBind();
-      dd(['SQL' => $sql, 'Binds' => $binds]);
-      */
-
-      $this->modulo->setFilters($filters);
-
       $modulos = $this->modulo->fetchAll();
 
       if (!$modulos) {
@@ -147,81 +71,76 @@ class PermissoesController extends Controller
          'modulos' => $modulos
       ]);
    }
-   public function edit($params)
+
+   public function save()
    {
-      PermissionMiddleware::check($this->moduloId, 'editar');
-      $nivel = $this->nivel->findBy('nivel_id', $params[0]);
-      $modulos = $this->modulo->fetchAll();
-      $permissoes = $this->permissao->getPermissionsByLevel($params[0]);
-      $this->view('permission/edit', compact('nivel', 'modulos', 'permissoes'));
+
+      $inputs = Request::all();
+
+      $nivel_id = $inputs['nivel_id'];
+      $dados = $inputs['permissoes'] ?? '';
+      //dd($dados[1]['adicionar']);
+      $this->permissao = new Permission();
+
+      // Limpa permissões atuais
+      if ($nivel_id > 1) {
+         //$this->permissao->deleteWhere(['nivel_id' => $nivel_id]);
+      }
+
+      if (!empty($dados)) {
+
+         // Insere as novas permissões
+         foreach ($dados as $modulo_id => $acoes) {
+            $filters = (new Filters())
+               ->where('nivel_id', '=', $nivel_id, 'and')
+               ->where('modulo_id', '=', $modulo_id);
+
+            $this->permissao->setFilters($filters);
+
+            $exists = $this->permissao->fetchAll();
+
+            if ($acoes['ver'] == 0) {
+               $data = [
+                  'pode_ver' => 0,
+                  'pode_editar' =>0,
+                  'pode_adicionar' => 0,
+                  'pode_excluir' => 0,
+               ];
+            } else {
+               $data = [
+                  'pode_ver' => 1,
+                  'pode_editar' => $acoes['editar'] != 0 ? 1 : 0,
+                  'pode_adicionar' => $acoes['adicionar'] != 0 ? 1 : 0,
+                  'pode_excluir' => $acoes['excluir'] != 0 ? 1 : 0,
+               ];
+            }
+            if ($exists) {              
+               // Edita
+               $this->permissao->update('id', $exists[0]->id, $data);
+               $msg="Permissões atualizadas com sucesso!";
+            } else {
+               // Adiciona
+               $this->permissao->create(array_merge($data, [
+                  'nivel_id' => $nivel_id,
+                  'modulo_id' => $modulo_id,
+               ]));
+               $msg="Permisões Adicionadas com sucesso!";
+            }
+         }
+         redirect("/permissao?nivel_id=$nivel_id", 'success', $msg);
+      } else {
+         redirect("/permissao?nivel_id=$nivel_id", 'info', 'Nenhuma permissão foi informada.');
+      }
    }
-   public function update($params)
-   {
-      $this->view('permissoes/update', [
-         'title' => 'Atualizar Permissão',
-      ]);
-   }
-   public function delete($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'deletar');
-      $this->view('permissoes/delete', [
-         'title' => 'Deletar Permissão',
-      ]);
-   }
-   public function show($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'ver');
-      $this->view('permissoes/show', [
-         'title' => 'Ver Permissão',
-      ]);
-   }
-   public function store()
-   {
-      PermissionMiddleware::check($this->moduloId, 'criar');
-      $this->view('permissoes/store', [
-         'title' => 'Criar Permissão',
-      ]);
-   }
-   public function destroy($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'deletar');
-      $this->view('permissoes/destroy', [
-         'title' => 'Deletar Permissão',
-      ]);
-   }
-   public function updatePermission($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'editar');
-      $this->view('permissoes/updatePermission', [
-         'title' => 'Atualizar Permissão',
-      ]);
-   }
-   public function deletePermission($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'deletar');
-      $this->view('permissoes/deletePermission', [
-         'title' => 'Deletar Permissão',
-      ]);
-   }
-   public function showPermission($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'ver');
-      $this->view('permissoes/showPermission', [
-         'title' => 'Ver Permissão',
-      ]);
-   }
-   public function storePermission()
-   {
-      PermissionMiddleware::check($this->moduloId, 'criar');
-      $this->view('permissoes/storePermission', [
-         'title' => 'Criar Permissão',
-      ]);
-   }
-   public function destroyPermission($params)
-   {
-      PermissionMiddleware::check($this->moduloId, 'deletar');
-      $this->view('permissoes/destroyPermission', [
-         'title' => 'Deletar Permissão',
-      ]);
-   }
+
+   /* Exemplo de uso
+   $filters = (new Filters())
+      ->where('users.age', '>', 18)
+      ->where('users.name', 'LIKE', 'rodrigo')
+      ->join('orders', 'users.id', '=', 'orders.user_id')
+      ->orderBy('users.created_at', 'DESC')
+      ->limit(10);
+   */
+
+   
 }

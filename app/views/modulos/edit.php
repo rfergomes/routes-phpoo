@@ -64,6 +64,18 @@
                                 } ?>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="tipo_permissao">Tipo de Permissão</label>
+                                <select name="tipo_permissao" id="tipo_permissao" class="form-select w-auto">
+                                    <?php foreach ($niveis as $nivel): ?>
+                                        <option value="<?= $nivel->id ?>" <?= $this->e($nivel->id) == $this->e($modulo->tipo_permissao) ? 'selected' : '' ?>>
+                                            <?= $nivel->nome ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer px-0">
                         <div class="text-start">

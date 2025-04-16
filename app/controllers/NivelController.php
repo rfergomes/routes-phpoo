@@ -5,8 +5,10 @@ namespace app\controllers;
 use app\database\Filters;
 use app\support\Validate;
 use app\database\Pagination;
-use app\Controllers\Controller;
 use app\database\models\Nivel;
+use app\Controllers\Controller;
+use app\database\models\Modulo;
+use app\database\models\Permission;
 use app\middleware\PermissionMiddleware;
 
 class NivelController extends Controller
@@ -102,12 +104,29 @@ class NivelController extends Controller
             );
         } else {
             // Cadastrar Módulo
-            $result = $this->nivel->create($validated);
-            
+            $result_id = $this->nivel->create($validated);
+            if ($result_id) {
+                $modulo = new Modulo();
+                $modulos=$modulo->fetchAll();
+
+                $permissao = new Permission();
+
+                foreach ($modulos as $modulo) {
+                    $permissao->create([
+                        'nivel_id' => $result_id,
+                        'modulo_id' => $modulo->id,
+                        'pode_ver' => 0,
+                        'pode_editar' => 0,
+                        'pode_adicionar' => 0,
+                        'pode_excluir' => 0
+                    ]);
+
+                }
+            }
             return redirect(
                 '/nivel',
-                $result ? 'success' : 'danger',
-                $result ? 'Nivel Adicionado com sucesso!' : 'Falha ao adicionar Nivel'
+                $result_id ? 'success' : 'danger',
+                $result_id ? 'Nivel Adicionado com sucesso!' : 'Falha ao adicionar Nivel'
             );
         }
     }

@@ -14,14 +14,15 @@
                     <div class="col d-flex justify-content-start">
                         <h3><?= $title . (isset($count) ? " [" . $count . "]" : null) ?></h3>
                     </div>
-                    
+
                     <div class="col d-flex justify-content-end">
                         <a href="/modulo" class="btn btn-primary" title="Voltar">Voltar</a>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                        <?= $this->insert('partials/flash'); ?>
-                    </div>
+                    <?= $this->insert('partials/flash'); ?>
+
+                </div>
             </div>
             <div class="card-body">
                 <form action="/modulo/save" method="post">
@@ -31,7 +32,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="nome">Nome do Módulo</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['nome']) ? 'is-invalid' : '' ?>" name="nome" id="nome" aria-describedby="NomeModulo" value="<?= $this->e(getOld('nome')) ?>" placeholder="Nome do Módulo">
+                                <input type="text" class="form-control <?= isset($_SESSION['nome']) ? 'is-invalid' : '' ?>" name="nome" id="nome" aria-describedby="NomeModulo" value="<?= getOld('nome') ?? ''?>" placeholder="Nome do Módulo">
                                 <?php if (isset($_SESSION['nome'])) {
                                     echo flash('nome', 'field');
                                 } ?>
@@ -40,7 +41,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="descricao">Descrição</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['descricao']) ? 'is-invalid' : '' ?>" name="descricao" id="descricao" value="<?= $this->e(getOld('descricao')) ?>" placeholder="Descrição">
+                                <input type="text" class="form-control <?= isset($_SESSION['descricao']) ? 'is-invalid' : '' ?>" name="descricao" id="descricao" value="<?= !empty(getOld('descricao')) ? $this->e(getOld('descricao')) : ''?>" placeholder="Descrição">
                                 <?php if (isset($_SESSION['descricao'])) {
                                     echo flash('descricao', 'field');
                                 } ?>
@@ -49,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="icone">Ícone</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['icone']) ? 'is-invalid' : '' ?>" name="icone" value="<?= $this->e(getOld('icone')) ?>" placeholder="icone">
+                                <input type="text" class="form-control <?= isset($_SESSION['icone']) ? 'is-invalid' : '' ?>" name="icone" value="<?= !empty(getOld('icone')) ? $this->e(getOld('icone')) : '' ?>" placeholder="icone">
                                 <?php if (isset($_SESSION['icone'])) {
                                     echo flash('icone', 'field');
                                 } ?>
@@ -58,10 +59,22 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="rota">Rota</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['rota']) ? 'is-invalid' : '' ?>" name="rota" value="<?= $this->e(getOld('rota')) ?>" placeholder="rota">
+                                <input type="text" class="form-control <?= isset($_SESSION['rota']) ? 'is-invalid' : '' ?>" name="rota" value="<?= !empty(getOld('rota')) ? $this->e(getOld('rota')) : '' ?>" placeholder="rota">
                                 <?php if (isset($_SESSION['rota'])) {
                                     echo flash('rota', 'field');
                                 } ?>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="tipo_permissao">Tipo de Permissão</label>
+                                <select name="tipo_permissao" id="tipo_permissao" class="form-select w-auto">
+                                    <?php foreach ($niveis as $nivel): ?>
+                                        <option value="<?= $nivel->id ?>" <?= $this->e($nivel->id) === getOld('tipo_permissao') ? 'selected' : ''?>>
+                                            <?= $nivel->nome; getOld('tipo_permissao'); ?> 
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -71,6 +84,9 @@
                         </div>
                     </div>
                 </form>
+                <pre><?php print_r($_SESSION['old']);?></pre>
+                <pre><?= $_SESSION['old']['nome'];?></pre>
+                <pre><?= getOld('tipo_permissao');?></pre>
             </div>
         </div>
     </div>

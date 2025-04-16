@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <div class="d-flex align-items-center">
-                            <a href="/permissao/create" class="btn btn-primary btn-sm me-2">Adicionar Permissão</a>
+                            <!--<a href="/permissao/create" class="btn btn-primary btn-sm me-2">Adicionar Permissão</a>-->
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
 
                         <form action="/permissao/save" method="post">
                             <?php echo getToken(); ?>
-                            <input type="hidden" name="nivel_id" value="<?= $permissoes[0]->nivel_id ?>">
+                            <input type="hidden" name="nivel_id" value="<?= isset($permissoes[0]) ? $permissoes[0]->nivel_id : "" ?>">
                             <table class="table datatable-table" id="pc-dt-simple">
                                 <thead class="bg-dark text-white">
                                     <tr>
@@ -74,6 +74,9 @@
                                                         <?= $tipo[$acao] ? 'checked' : '' ?> class="form-check-input">-->
 
                                                     <div class="form-check form-switch custom-switch-v1 mb-2">
+                                                        <input type="hidden"
+                                                            name="permissoes[<?= $permissao->modulo_id ?>][<?= $acao ?>]"
+                                                            value="0">
                                                         <input type="checkbox"
                                                             class="form-check-input input-success"
                                                             name="permissoes[<?= $permissao->modulo_id ?>][<?= $acao ?>]"
@@ -85,7 +88,7 @@
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan="4" class="text-center">Nenhum módulo encontrado.</td>
+                                        <td colspan="5" class="text-center">Nenhum módulo encontrado.</td>
                                     </tr>
                                 <?php endif; ?>
                                 </tbody>
@@ -113,4 +116,23 @@
 <?php $this->push('scripts') ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const moduloSelect = document.getElementById("moduloSelect");
+        const checkboxes = document.querySelectorAll(".perm");
+
+        function atualizarNomes() {
+            const moduloId = moduloSelect.value;
+            checkboxes.forEach(cb => {
+                const acao = cb.dataset.acao;
+                cb.name = `dados[${moduloId}][${acao}]`;
+            });
+        }
+        atualizarNomes();
+        moduloSelect.addEventListener("change", () => {
+            atualizarNomes();
+        });
+    });
+</script>
+
 <?php $this->end() ?>

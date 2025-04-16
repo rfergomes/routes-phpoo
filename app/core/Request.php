@@ -1,4 +1,5 @@
 <?php
+
 namespace app\core;
 
 use Exception;
@@ -7,7 +8,8 @@ class Request
 {
     public static function input(string $name)
     {
-        if (isset($_POST[$name])) {
+        if (isset($_POST[$name])) { 
+                     
             return $_POST[$name];
         }
 
@@ -64,7 +66,7 @@ class Request
         if (!isset($_GET[$name])) {
             throw new Exception("Não existe a query string {$name}");
         }
-        return $_GET[$name] ;
+        return $_GET[$name];
     }
 
     public static function toJson(array $data)

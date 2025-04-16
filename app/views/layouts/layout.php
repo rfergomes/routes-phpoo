@@ -14,7 +14,7 @@
     <meta name="author" content="phoenixcoded">
 
     <!-- [Favicon] icon -->
-    <link rel="icon" href="<?= getenv('APP_URL') ?>/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="icon" href="<?= getenv('APP_URL') ?>/assets/images/logo32.png" type="image/x-icon">
     <!-- [Google Font : Public Sans] icon -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 

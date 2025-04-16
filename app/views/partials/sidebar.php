@@ -4,8 +4,8 @@
      <div class="m-header">
          <a href="<?= getenv('APP_URL') ?>/" class="b-brand text-primary">
              <!-- ========   Change your logo from here   ============ -->
-             <img src="<?= getenv('APP_URL') ?>/assets/images/logo-white.svg" alt="logo image" class="logo-lg">
-             <span class="badge bg-primary rounded-pill ms-2 theme-version">v1.2</span>
+             <img src="<?= getenv('APP_URL') ?>/assets/images/Logo_wide.png" alt="logo image" class="logo-lg">
+             <span class="badge bg-primary rounded-pill ms-2 theme-version">v2.5</span>
          </a>
      </div>
 
@@ -13,12 +13,12 @@
          <div class="card-body">
              <div class="nav-user-image">
                  <a data-bs-toggle="collapse" href="#navuserlink">
-                     <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-1.jpg" alt="user-image" class="user-avtar rounded-circle">
+                     <img src="<?= getenv('APP_URL') ?>/assets/images/user/<?= $_SESSION['user']->avatar ?>" alt="user-image" class="user-avtar rounded-circle">
                  </a>
              </div>
              <div class="pc-user-collpsed collapse" id="navuserlink">
-                 <h4 class="mb-0">Jonh Smith</h4>
-                 <span>Administrator</span>
+                 <h4 class="mb-0"><?= $_SESSION['user']->nome ?></h4>
+                 <span><?= $_SESSION['user']->cargo ?></span>
                  <ul>
                      <li><a class="pc-user-links">
                              <i class="ph-duotone ph-user"></i>

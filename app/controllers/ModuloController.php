@@ -6,10 +6,10 @@ namespace app\controllers;
 use app\database\Filters;
 use app\support\Validate;
 use app\database\Pagination;
+use app\database\models\Nivel;
 use app\Controllers\Controller;
 use app\database\models\Modulo;
 use app\database\models\Permission;
-use app\database\models\Usuario;
 use app\middleware\PermissionMiddleware;
 
 class ModuloController extends Controller
@@ -52,8 +52,12 @@ class ModuloController extends Controller
     public function create()
     {
         PermissionMiddleware::check($this->moduloId, 'adicionar');
+        $nivel = new Nivel();
+        $niveis = $nivel->fetchAll();
+
         $this->view("{$this->viewFolder}/create", [
             'title' => 'Criar Módulo',
+            'niveis' => $niveis
         ]);
     }
     public function edit($params)
@@ -72,23 +76,27 @@ class ModuloController extends Controller
             return redirect("/404");
         }
 
+        $nivel = new Nivel();
+        $niveis = $nivel->fetchAll();
+
         $this->view("{$this->viewFolder}/edit", [
             'title' => 'Editar Módulo',
             'moduloId' => $id,
-            'modulo' => $modulo
+            'modulo' => $modulo,
+            'niveis' => $niveis
         ]);
     }
     public function save()
     {
-        PermissionMiddleware::check($this->moduloId, 'editar');
-        PermissionMiddleware::check($this->moduloId, 'adicionar');
+
         $validate = new Validate;
         $validated = $validate->validate([
             'id' => 'optional',
             'nome' => 'required',
             'descricao' => 'required',
             'icone' => 'required',
-            'rota' => 'required'
+            'rota' => 'required',
+            'tipo_permissao'=> 'required',
         ], persistInputs: true);
 
         $inputs = $validate->getInputs();
@@ -97,9 +105,10 @@ class ModuloController extends Controller
         if (!$validated) {
             return redirect($id > 0 ? "/{$this->moduloName}/edit/{$id}" : "/{$this->moduloName}/create", 'warning', 'Verifique os campos obrigatórios');
         }
-
+        
         if ($id) {
             // Editar Módulo
+            
             $result = $this->modulo->update('id', $id, $validated);
             return redirect(
                 "/{$this->moduloName}",
@@ -107,23 +116,39 @@ class ModuloController extends Controller
                 $result ? 'Módulo atualizado com sucesso!' : 'Falha ao cadastrar Módulo'
             );
         } else {
+
             // Cadastrar Módulo
-            $result = $this->modulo->create($validated);
-            if ($result) {
+            $result_id = $this->modulo->create($validated);
+            if ($result_id) {
+
+                $novoModulo = $this->modulo->findBy('id', $result_id);
+
+                $nivel = new Nivel();
+                $niveis = $nivel->fetchAll();
                 $permissao = new Permission();
-                $permissao->create([
-                    'nivel_id' => 1,
-                    'modulo_id' => $result,
-                    'pode_ver' => 1,
-                    'pode_editar' => 1,
-                    'pode_adicionar' => 1,
-                    'pode_excluir' => 1,
-                ]);
+
+                $permissoesIniciais = [
+                    1 => ['pode_ver' => 1, 'pode_editar' => 1, 'pode_adicionar' => 1, 'pode_excluir' => 1],
+                    2 => ['pode_ver' => 1, 'pode_editar' => 0, 'pode_adicionar' => 0, 'pode_excluir' => 0],
+                    3 => ['pode_ver' => 0, 'pode_editar' => 0, 'pode_adicionar' => 0, 'pode_excluir' => 0],
+                ];
+
+                foreach ($niveis as $nivel) {
+                    if (isset($permissoesIniciais[$nivel->id])) {
+                        $dados = array_merge([
+                            'nivel_id' => $nivel->id,
+                            'modulo_id' => $result_id,
+                        ], $permissoesIniciais[$nivel->id]);
+                        if ($nivel->id <= $novoModulo->tipo_permissao) {
+                            $permissao->create($dados);
+                        }
+                    }
+                }
             }
             return redirect(
                 "/{$this->moduloName}",
-                $result ? 'success' : 'danger',
-                $result ? 'Módulo Adicionado com sucesso!' : 'Falha ao adicionar Módulo'
+                $result_id ? 'success' : 'danger',
+                $result_id ? 'Módulo Adicionado com sucesso!' : 'Falha ao adicionar Módulo'
             );
         }
     }

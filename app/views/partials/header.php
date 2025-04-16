@@ -27,8 +27,8 @@
                     <div class="dropdown-menu pc-h-dropdown drp-search">
                         <form class="px-1">
                             <div class="form-group mb-0 d-flex align-items-center">
-                                <input type="search" class="form-control border-0 shadow-none" placeholder="Search here. . .">
-                                <button class="btn btn-light-secondary btn-search">Search</button>
+                                <input type="search" class="form-control border-0 shadow-none" placeholder="Digite aqui. . .">
+                                <button class="btn btn-light-secondary btn-search">Pesquisar</button>
                             </div>
                         </form>
                     </div>
@@ -275,11 +275,11 @@
                         aria-haspopup="false"
                         data-bs-auto-close="outside"
                         aria-expanded="false">
-                        <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
+                        <img src="<?= getenv('APP_URL') ?>/assets/images/user/<?= $_SESSION['user']->avatar ?>" alt="user-image" class="user-avtar">
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header d-flex align-items-center justify-content-between">
-                            <h4 class="m-0">Profile</h4>
+                            <h4 class="m-0">Perfil</h4>
                         </div>
                         <div class="dropdown-body">
                             <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
@@ -287,11 +287,11 @@
                                     <li class="list-group-item">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="wid-50 rounded-circle">
+                                                <img src="<?= getenv('APP_URL') ?>/assets/images/user/<?= $_SESSION['user']->avatar ?>" alt="user-image" class="wid-50 rounded-circle">
                                             </div>
                                             <div class="flex-grow-1 mx-3">
-                                                <h5 class="mb-0">Carson Darrin</h5>
-                                                <a class="link-primary" href="mailto:carson.darrin@company.io">carson.darrin@company.io</a>
+                                                <h5 class="mb-0"><?= $_SESSION['user']->nome ?></h5>
+                                                <a class="link-primary" href="mailto:<?= $_SESSION['user']->email ?>"><?= $_SESSION['user']->email ?></a>
                                             </div>
                                             <span class="badge bg-primary">PRO</span>
                                         </div>

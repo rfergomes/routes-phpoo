@@ -32,25 +32,25 @@ abstract class Model
   }
 
   public function create(array $data)
-{
+  {
     try {
-        $sql = "INSERT INTO {$this->table} (";
-        $sql .= implode(',', array_keys($data)) . ") VALUES(";
-        $sql .= ':' . implode(',:', array_keys($data)) . ")";
+      $sql = "INSERT INTO {$this->table} (";
+      $sql .= implode(',', array_keys($data)) . ") VALUES(";
+      $sql .= ':' . implode(',:', array_keys($data)) . ")";
 
-        $connect = Connection::connect();
-        $prepare = $connect->prepare($sql);
+      $connect = Connection::connect();
+      $prepare = $connect->prepare($sql);
 
-        if ($prepare->execute($data)) {
-            return $connect->lastInsertId(); // Retorna o ID gerado
-        }
+      if ($prepare->execute($data)) {
+        return $connect->lastInsertId(); // Retorna o ID gerado
+      }
 
-        return false; // Caso não insira nada
+      return false; // Caso não insira nada
     } catch (PDOException $e) {
-        var_dump($e->getMessage());
-        return false;
+      var_dump($e->getMessage());
+      return false;
     }
-}
+  }
 
 
 
@@ -99,24 +99,43 @@ abstract class Model
     }
   }
 
-  public function findBy(string $field = '', string $value = '')
-  {
+  public function findBy(array|string $field, string $value = '')
+{
     try {
-      $sql = (empty($this->filters)) ?
-        "SELECT {$this->fields} FROM {$this->table} WHERE {$field} = :{$field}" :
-        "SELECT {$this->fields} FROM {$this->table} {$this->filters?->dump()}";
+        $sql = "SELECT {$this->fields} FROM {$this->table}";
 
-      $connection = Connection::connect();
+        $bind = [];
 
-      $prepare = $connection->prepare($sql);
+        // Se for array: monta a cláusula WHERE com múltiplos campos
+        if (is_array($field)) {
+            $conditions = [];
+            foreach ($field as $f => $v) {
+                $conditions[] = "{$f} = :{$f}";
+                $bind[$f] = $v;
+            }
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        } else {
+            // Caso contrário, trata como string + value simples
+            $sql .= " WHERE {$field} = :{$field}";
+            $bind[$field] = $value;
+        }
 
-      $prepare->execute($this->filters ? $this->filters->getBind() : [$field => $value]);
+        // Se houver filtros externos (como WHEREs adicionais)
+        if (!empty($this->filters)) {
+            $sql .= ' ' . $this->filters->dump();
+            $bind = array_merge($bind, $this->filters->getBind());
+        }
 
-      return $prepare->fetchObject();
+        $connection = Connection::connect();
+        $prepare = $connection->prepare($sql);
+        $prepare->execute($bind);
+
+        return $prepare->fetchObject();
     } catch (PDOException $e) {
-      var_dump($e->getMessage());
+        var_dump($e->getMessage());
+        return null;
     }
-  }
+}
 
   public function first($field = 'id', $order = 'asc')
   {
@@ -149,6 +168,27 @@ abstract class Model
       var_dump($e->getMessage());
     }
   }
+
+  public function deleteWhere(array $conditions): bool
+  {
+    try {
+      $whereClauses = [];
+      foreach ($conditions as $key => $value) {
+        $whereClauses[] = "{$key} = :{$key}";
+      }
+
+      $sql = "DELETE FROM {$this->table} WHERE " . implode(' AND ', $whereClauses);
+
+      $connection = Connection::connect();
+      $prepare = $connection->prepare($sql);
+
+      return $prepare->execute($conditions);
+    } catch (PDOException $e) {
+      var_dump($e->getMessage());
+      return false;
+    }
+  }
+
 
   public function count()
   {
