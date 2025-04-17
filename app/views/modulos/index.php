@@ -52,9 +52,9 @@
                                     <th style="width: 5%; color:white;">#</th>
                                     <th style="width: 20.39080459770115%; color:white;">MÓDULO</th>
                                     <th style="width: 30.689655172413794%; color:white;">DESCRIÇÃO</th>
-                                    <th style="width: 16.310344827586206%; color:white;">ÍCONE</th>
-                                    <th style="width: 16.310344827586206%; color:white;">ROTA</th>
-                                    <th style="width: 16.310344827586206%; color:white;">MENU</th>
+                                    <th style="width: 10.310344827586206%; color:white;">ÍCONE</th>
+                                    <th style="width: 15.310344827586206%; color:white;">ROTA</th>
+                                    <th style="width: 15.310344827586206%; color:white;">MENU</th>
                                     <th class="text-start" style="width: 25.436781609195402%; color:white;">AÇÃO</th>
                                 </tr>
                             </thead>
@@ -67,13 +67,8 @@
                                             <td><?= $this->e($modulo->nome); ?></td>
                                             <td><?= $this->e($modulo->descricao); ?></td>
                                             <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <i class="fa fa-<?= $this->e($modulo->icone) ?>"></i>
-                                                    <div class="d-inline-block">
-                                                        <h6 class="m-b-0"><?= $this->e($modulo->icone); ?></h6>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                                <h3 data-bs-toggle="tooltip" data-bs-original-title="<?= $this->e($modulo->icone) ?>"><i class="<?= $this->e($modulo->icone) ?>"></i></h3> 
+                                                </td>
                                             <td>
                                                 <p class="m-0"><?= $this->e($modulo->rota); ?></p>
                                             </td>

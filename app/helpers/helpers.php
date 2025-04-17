@@ -91,7 +91,6 @@ function getModulosPermitidos($nivel_id)
     $resultado = [];
     foreach ($menus as $menu) {
         $menu->modulos = [];
-
         foreach ($modulos as $modulo) {
             if ($modulo->menu_id == $menu->id) {
                 $menu->modulos[] = $modulo;

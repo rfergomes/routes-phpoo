@@ -46,18 +46,18 @@
         $menus = getModulosPermitidos($nivel_id);
         ?>
      <div class="navbar-content">
-         <ul class="pc-navbar"">
+         <ul class="pc-navbar">
              <?php foreach ($menus as $menu): ?>
                  <li class="pc-item pc-caption">
                      <label><?= $menu->nome ?></label>
-                     <i class="ph-duotone ph-chart-pie"></i>
+                     <i class="<?= $menu->icone ?>"></i>
                      <span><?= $menu->descricao ?></span>
                  </li>
                  <?php foreach ($menu->modulos as $modulo): ?>
                      <li class="pc-item">
                          <a href="<?= $modulo->rota ?>" class="pc-link">
                              <span class="pc-micon">
-                                 <i class="ph-duotone ph-<?= $modulo->icone ?>"></i></span>
+                                 <i class="<?= $modulo->icone ?>"></i></span>
                              <span class="pc-mtext"><?= $modulo->nome ?></span>
                          </a>
                      </li>
