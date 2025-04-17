@@ -1,6 +1,10 @@
 <?php
 
 use app\support\Uri;
+use app\database\Filters;
+use app\database\models\Menu;
+use app\database\models\Modulo;
+
 
 function arrayIsAssociative(array $arr)
 {
@@ -65,3 +69,40 @@ function breadcrumb(): array
     return $breadcrumbs;
 }
 
+
+function getModulosPermitidos($nivel_id)
+{
+    $filters = (new Filters())
+        ->join('permissions', 'permissions.modulo_id', '=', 'modulos.id')
+        ->where('permissions.nivel_id', '=', $nivel_id, 'AND')
+        ->where('permissions.pode_ver', '=', '1','AND')
+        ->where('modulos.menu_id','>', 1)
+        ->orderBy('modulos.nome', 'ASC');
+
+    $moduloModel = new Modulo();
+    $moduloModel->setFields('modulos.id, modulos.nome, modulos.rota, modulos.icone, modulos.menu_id');
+    $moduloModel->setFilters($filters);
+    $modulos = $moduloModel->fetchAll();
+
+    $menuModel = new Menu();
+    $menus = $menuModel->fetchAll();
+
+    // Organizar os módulos dentro dos seus respectivos menus
+    $resultado = [];
+    foreach ($menus as $menu) {
+        $menu->modulos = [];
+
+        foreach ($modulos as $modulo) {
+            if ($modulo->menu_id == $menu->id) {
+                $menu->modulos[] = $modulo;
+            }
+        }
+
+        // Só adiciona menu se tiver ao menos um módulo permitido
+        if (!empty($menu->modulos)) {
+            $resultado[] = $menu;
+        }
+    }
+
+    return $resultado;
+}

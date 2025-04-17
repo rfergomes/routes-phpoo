@@ -49,12 +49,13 @@
                         <table class="table table-hover datatable-table" id="pc-dt-simple">
                             <thead class="bg-dark">
                                 <tr>
-                                    <th style="width: 5.172413793103448%; color:white;">#</th>
+                                    <th style="width: 5%; color:white;">#</th>
                                     <th style="width: 20.39080459770115%; color:white;">MÓDULO</th>
-                                    <th style="width: 38.689655172413794%; color:white;">DESCRIÇÃO</th>
+                                    <th style="width: 30.689655172413794%; color:white;">DESCRIÇÃO</th>
                                     <th style="width: 16.310344827586206%; color:white;">ÍCONE</th>
-                                    <th style="width: 18.310344827586206%; color:white;">ROTA</th>
-                                    <th class="text-center" style="width: 18.436781609195402%; color:white;">AÇÃO</th>
+                                    <th style="width: 16.310344827586206%; color:white;">ROTA</th>
+                                    <th style="width: 16.310344827586206%; color:white;">MENU</th>
+                                    <th class="text-start" style="width: 25.436781609195402%; color:white;">AÇÃO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,6 +76,9 @@
                                             </td>
                                             <td>
                                                 <p class="m-0"><?= $this->e($modulo->rota); ?></p>
+                                            </td>
+                                            <td>
+                                                <p class="m-0"><?= $this->e($modulo->menu); ?></p>
                                             </td>
                                             <td class="text-center">
 

@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\database\Filters;
+use app\database\models\Menu;
 use app\support\Validate;
 use app\database\Pagination;
 use app\database\models\Nivel;
@@ -29,11 +30,13 @@ class ModuloController extends Controller
         $itemPerpage = filter_input(INPUT_GET, "items", FILTER_SANITIZE_SPECIAL_CHARS) ?? 10;
 
         $filters = (new Filters())
-            ->where('nome', 'LIKE', $search);
+            ->join("menu", "menu.id", "=", "modulos.menu_id",'LEFT JOIN')
+            ->where('modulos.nome', 'LIKE', $search);
 
         $pagination = new Pagination;
         $pagination->setItemsPerPage($itemPerpage ?? 10);
 
+        $this->modulo->setFields('modulos.id, modulos.nome, modulos.descricao, modulos.icone, rota, menu.nome menu');
         $this->modulo->setFilters($filters);
         $this->modulo->setPagination($pagination);
 
@@ -55,9 +58,13 @@ class ModuloController extends Controller
         $nivel = new Nivel();
         $niveis = $nivel->fetchAll();
 
+        $menu = new Menu();
+        $menus = $menu->fetchAll();
+
         $this->view("{$this->viewFolder}/create", [
             'title' => 'Criar Módulo',
-            'niveis' => $niveis
+            'niveis' => $niveis,
+            'menus' => $menus
         ]);
     }
     public function edit($params)
@@ -79,11 +86,15 @@ class ModuloController extends Controller
         $nivel = new Nivel();
         $niveis = $nivel->fetchAll();
 
+        $menu = new Menu();
+        $menus = $menu->fetchAll();
+
         $this->view("{$this->viewFolder}/edit", [
             'title' => 'Editar Módulo',
             'moduloId' => $id,
             'modulo' => $modulo,
-            'niveis' => $niveis
+            'niveis' => $niveis,
+            'menus' => $menus
         ]);
     }
     public function save()
@@ -94,9 +105,10 @@ class ModuloController extends Controller
             'id' => 'optional',
             'nome' => 'required',
             'descricao' => 'required',
-            'icone' => 'required',
-            'rota' => 'required',
-            'tipo_permissao'=> 'required',
+            'icone' => 'optional',
+            'rota' => 'optional',
+            'tipo_permissao' => 'required',
+            'menu_id' => 'required'
         ], persistInputs: true);
 
         $inputs = $validate->getInputs();
@@ -105,10 +117,10 @@ class ModuloController extends Controller
         if (!$validated) {
             return redirect($id > 0 ? "/{$this->moduloName}/edit/{$id}" : "/{$this->moduloName}/create", 'warning', 'Verifique os campos obrigatórios');
         }
-        
+
         if ($id) {
             // Editar Módulo
-            
+
             $result = $this->modulo->update('id', $id, $validated);
             return redirect(
                 "/{$this->moduloName}",

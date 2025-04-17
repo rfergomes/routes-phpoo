@@ -76,6 +76,18 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="menu_id">Grupo de Menu</label>
+                                <select name="menu_id" id="menu_id" class="form-select w-auto">
+                                    <?php foreach ($menus as $menu): ?>
+                                        <option value="<?= $menu->id ?>" <?= $this->e($menu->id) == $this->e($modulo->menu_id) ? 'selected' : '' ?>>
+                                            <?= $menu->nome ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer px-0">
                         <div class="text-start">

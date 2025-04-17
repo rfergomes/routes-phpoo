@@ -41,185 +41,29 @@
              </div>
          </div>
      </div>
+     <?php
+        $nivel_id = $_SESSION['user']->nivel_id;
+        $menus = getModulosPermitidos($nivel_id);
+        ?>
      <div class="navbar-content">
-         <ul class="pc-navbar">
-             <li class="pc-item pc-caption">
-                 <label>Painel</label>
-             </li>
-             <li class="pc-item pc-hasmenu">
-                 <a href="#!" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-gauge"></i>
-                     </span>
-                     <span class="pc-mtext">Dashboard</span>
-                     <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                 </a>
-                 <ul class="pc-submenu">
-                     <li class="pc-item"><a class="pc-link" href="<?= getenv('APP_URL') ?>/dashboard/index.html">Default</a></li>
-                     <li class="pc-item"><a class="pc-link" href="<?= getenv('APP_URL') ?>/dashboard/affiliate.html">Affiliate</a></li>
-                     <li class="pc-item"><a class="pc-link" href="<?= getenv('APP_URL') ?>/dashboard/analytics.html">Analytics</a></li>
-                     <li class="pc-item"><a class="pc-link" href="<?= getenv('APP_URL') ?>/dashboard/ecommerce.html">E-commerce</a></li>
-                     <li class="pc-item"><a class="pc-link" href="<?= getenv('APP_URL') ?>/dashboard/project.html">Project</a></li>
-                 </ul>
-             </li>
-
-             <li class="pc-item pc-caption">
-                 <label>Serviços</label>
-                 <i class="ph-duotone ph-chart-pie"></i>
-                 <span>Gerenciar Movimentações</span>
-             </li>
-
-             <li class="pc-item">
-                 <a href="<?= getenv('APP_URL') ?>/ativo" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-identification-card"></i>
-                     </span>
-                     <span class="pc-mtext">Ativos</span>
-                 </a>
-             </li>
-
-             <li class="pc-item">
-                 <a href="<?= getenv('APP_URL') ?>/emprestimo" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-identification-card"></i>
-                     </span>
-                     <span class="pc-mtext">Empréstimo</span>
-                 </a>
-             </li>
-
-             <li class="pc-item">
-                 <a href="<?= getenv('APP_URL') ?>/movimentacao" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-identification-card"></i>
-                     </span>
-                     <span class="pc-mtext">Movimentação</span>
-                 </a>
-             </li>
-
-             <li class="pc-item">
-                 <a href="<?= getenv('APP_URL') ?>/transferencia" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-identification-card"></i>
-                     </span>
-                     <span class="pc-mtext">Transferências</span>
-                 </a>
-             </li>
-
-             <li class="pc-item pc-caption">
-                 <label>Cadastros</label>
-             </li>
-             <li class="pc-item pc-hasmenu">
-                 <a href="#!" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-gauge"></i>
-                     </span>
-                     <span class="pc-mtext">Módulos</span>
-                     <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                 </a>
-                 <ul class="pc-submenu">
-                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/categoria" class="pc-link">
+         <ul class="pc-navbar"">
+             <?php foreach ($menus as $menu): ?>
+                 <li class="pc-item pc-caption">
+                     <label><?= $menu->nome ?></label>
+                     <i class="ph-duotone ph-chart-pie"></i>
+                     <span><?= $menu->descricao ?></span>
+                 </li>
+                 <?php foreach ($menu->modulos as $modulo): ?>
+                     <li class="pc-item">
+                         <a href="<?= $modulo->rota ?>" class="pc-link">
                              <span class="pc-micon">
-                                 <i class="ph-duotone ph-identification-card"></i>
-                             </span>
-                             <span class="pc-mtext">Categorias</span>
-                         </a></li>
-                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/localizacao" class="pc-link">
-                             <span class="pc-micon">
-                                 <i class="ph-duotone ph-chart-pie"></i>
-                             </span>
-                             <span class="pc-mtext">Localizações</span>
-                         </a>
-                     <li class="pc-item"> <a href="<?= getenv('APP_URL') ?>/fabricante" class="pc-link">
-                             <span class="pc-micon">
-                                 <i class="ph-duotone ph-identification-card"></i>
-                             </span>
-                             <span class="pc-mtext">Fabricantes</span>
+                                 <i class="ph-duotone ph-<?= $modulo->icone ?>"></i></span>
+                             <span class="pc-mtext"><?= $modulo->nome ?></span>
                          </a>
                      </li>
-                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/fornecedor" class="pc-link">
-                             <span class="pc-micon">
-                                 <i class="ph-duotone ph-database"></i>
-                             </span>
-                             <span class="pc-mtext">Fornecedores</span>
-                         </a>
-                     </li>
-                     <li class="pc-item"><a href="<?= getenv('APP_URL') ?>/modulo" class="pc-link">
-                             <span class="pc-micon">
-                                 <i class="ph-duotone ph-chart-pie"></i>
-                             </span>
-                             <span class="pc-mtext">Modulos</span></a>
-                     </li>
-                 </ul>
-             </li>
-
-             <li class="pc-item pc-caption">
-                 <label>Usuários</label>
-                 <i class="ph-duotone ph-chart-pie"></i>
-                 <span>Gerenciar Usuários</span>
-             </li>
-             <li class="pc-item">
-                 <a href="/usuario" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-projector-screen-chart"></i>
-                     </span>
-                     <span class="pc-mtext">Usuários</span>
-                 </a>
-             </li>
-
-             <li class="pc-item pc-caption">
-                 <label>Other</label>
-                 <i class="ph-duotone ph-suitcase"></i>
-                 <span>Extra More Things</span>
-             </li>
-             <li class="pc-item pc-hasmenu">
-                 <a href="#!" class="pc-link"><span class="pc-micon">
-                         <i class="ph-duotone ph-tree-structure"></i> </span><span class="pc-mtext">Menu levels</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                 <ul class="pc-submenu">
-                     <li class="pc-item"><a class="pc-link" href="#!">Level 2.1</a></li>
-                     <li class="pc-item pc-hasmenu">
-                         <a href="#!" class="pc-link">Level 2.2<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                         <ul class="pc-submenu">
-                             <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                             <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                             <li class="pc-item pc-hasmenu">
-                                 <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                                 <ul class="pc-submenu">
-                                     <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                                     <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                                 </ul>
-                             </li>
-                         </ul>
-                     </li>
-                     <li class="pc-item pc-hasmenu">
-                         <a href="#!" class="pc-link">Level 2.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                         <ul class="pc-submenu">
-                             <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                             <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                             <li class="pc-item pc-hasmenu">
-                                 <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                                 <ul class="pc-submenu">
-                                     <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                                     <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                                 </ul>
-                             </li>
-                         </ul>
-                     </li>
-                 </ul>
-             </li>
-             <li class="pc-item"><a href="../other/sample-page.html" class="pc-link">
-                     <span class="pc-micon">
-                         <i class="ph-duotone ph-desktop"></i>
-                     </span>
-                     <span class="pc-mtext">Sample page</span></a></li>
-
+                 <?PHP endforeach; ?>
+             <?php endforeach; ?>
          </ul>
-         <div class="card nav-action-card">
-             <div class="card-body">
-                 <h5 class="text-white">Help Center</h5>
-                 <p class="text-white text-opacity-75">Please contact us for more questions.</p>
-                 <a target="_blank" href="https://phoenixcoded.authordesk.app/" class="btn btn-primary">Go to help Center</a>
-             </div>
-         </div>
      </div>
  </div>
 
