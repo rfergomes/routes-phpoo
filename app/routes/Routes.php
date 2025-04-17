@@ -60,12 +60,19 @@ class Routes
                 '/localizacao/delete/[0-9]+' => 'LocalizacaoController@delete',
                 '/localizacao/show/[0-9]+' => 'LocalizacaoController@show',
 
+                // Menus
+                '/menu' => 'MenuController@index',
+                '/menu/create' => 'MenuController@create',
+                '/menu/edit/[0-9]+' => 'MenuController@edit',
+                '/menu/delete/[0-9]+' => 'MenuController@delete',
+                '/menu/show/[0-9]+' => 'MenuController@show',
+
                 //Módulos
                 '/modulo' => 'ModuloController@index',
                 '/modulo/create' => 'ModuloController@create',
                 '/modulo/edit/[0-9]+' => 'ModuloController@edit',
                 '/modulo/delete/[0-9]+' => 'ModuloController@delete',
-                '/modulo/show/[0-9]+' => 'ModuloController@show',
+                '/modulo/show/[0-9]+' => 'ModuloController@show',                
 
                 // Níveis de permissão
                 '/nivel'=> 'NivelController@index',
@@ -103,6 +110,9 @@ class Routes
 
                 // Localização
                 '/localizacao/save' => 'LocalizacaoController@save',
+
+                // Menu
+                '/menu/save'=> 'MenuController@save',
 
                 // Módulo
                 '/modulo/save'=> 'ModuloController@save',

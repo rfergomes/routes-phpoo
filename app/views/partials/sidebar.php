@@ -57,7 +57,8 @@
                      <li class="pc-item">
                          <a href="<?= $modulo->rota ?>" class="pc-link">
                              <span class="pc-micon">
-                                 <i class="<?= $modulo->icone ?>"></i></span>
+                                 <i class="<?= $modulo->icone ?>"></i>
+                             </span>
                              <span class="pc-mtext"><?= $modulo->nome ?></span>
                          </a>
                      </li>

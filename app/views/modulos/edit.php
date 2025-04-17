@@ -128,5 +128,4 @@
 <script src="<?= getenv('APP_URL') ?>/assets/js/pages/form-validation.js"></script>
 <script src="<?= getenv('APP_URL') ?>/assets/js/plugins/clipboard.min.js"></script>
 <script src="<?= getenv('APP_URL') ?>/assets/js/pages/pg_modulo.js"></script>
-
 <?php $this->end() ?>
