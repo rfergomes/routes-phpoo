@@ -28,6 +28,13 @@ class Routes
                 '/categoria/edit/[0-9]+' => 'CategoriaController@edit',
                 '/categoria/delete/[0-9]+'=> 'CategoriaController@delete',
 
+                // Equipamento
+                '/equipamento' => 'EquipamentoController@index',
+                '/equipamento/show' => 'EquipamentoController@show',
+                '/equipamento/create' => 'EquipamentoController@create',
+                '/equipamento/edit/[0-9]+' => 'EquipamentoController@edit',
+                '/equipamento/delete/[0-9]+'=> 'EquipamentoController@delete',
+
                 // Permissão
                 '/permissao' => 'PermissoesController@index',
                 '/permissao/create' => 'PermissoesController@create',
@@ -98,6 +105,9 @@ class Routes
 
                 // Usuário
                 '/usuario/save' => 'UsuarioController@save',
+
+                // Equipamento
+                '/equipamento/save' => 'EquipamentoController@save',
 
                 // Categoria
                 '/categoria/save'=> 'CategoriaController@save',

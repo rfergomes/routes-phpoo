@@ -48,7 +48,7 @@ function flash(string $index, string $mode = 'toast'): string
 
         // Alerta Bootstrap com ícone SVG
         $tipo['alert'] = '
-        <div class="alert alert-' . htmlspecialchars($type, ENT_QUOTES, 'UTF-8') . ' d-flex align-items-center alert-dismissible fade show" role="alert">
+        <div class="alert alert-' . htmlspecialchars($index, ENT_QUOTES, 'UTF-8') . ' d-flex align-items-center alert-dismissible fade show" role="alert">
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Ícone">
                 <use xlink:href="' . $ico . '"></use>
             </svg>

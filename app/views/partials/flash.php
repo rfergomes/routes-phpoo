@@ -1,5 +1,5 @@
 <?php
-foreach (['success', 'danger', 'warning', 'info'] as $type) {
+foreach (['success', 'danger', 'warning', 'info', 'error'] as $type) {
     echo flash($type, 'alert');
 }
 ?>

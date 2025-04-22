@@ -19,9 +19,9 @@
                     <?php endforeach; ?>
                 </ul>
                 <pre>
-    <?php print_r(['Usuarios' => $user, 'Permissões' => $permissions]);
-    print_r($_SESSION['permissions']); ?>
-</pre>
+                    <?php print_r(['Usuarios' => $user, 'Permissões' => $permissions]);
+                    print_r($_SESSION['permissions']); ?>
+                </pre>
             </div>
         </div>
     </div>
