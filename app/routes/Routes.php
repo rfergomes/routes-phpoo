@@ -21,6 +21,13 @@ class Routes
                 '/usuario/delete/[0-9]+' => 'UsuarioController@delete',
                 '/usuario/show/[0-9]+/[a-zA-Z]+' => 'UsuarioController@show',
 
+                // Ativo
+                '/ativo' => 'AtivoController@index',
+                '/ativo/show' => 'AtivoController@show',
+                '/ativo/create' => 'AtivoController@create',
+                '/ativo/edit/[0-9]+' => 'AtivoController@edit',
+                '/ativo/delete/[0-9]+'=> 'AtivoController@delete',
+
                 // Categoria
                 '/categoria' => 'CategoriaController@index',
                 '/categoria/show' => 'CategoriaController@show',
@@ -91,10 +98,15 @@ class Routes
                 '/emprestimo' => 'EmprestimoController@index',
                 '/manutencao' => 'ManutencaoController@index',
                 '/maintenance' => 'MaintenanceController@index',
-                '/softwares' => 'SoftwaresController@index',
+                
                 '/historico' => 'HistoricoMovimentacaoController@index',
                 '/log-sistema' => 'LogSistemaController@index',
                 
+                // Softwares
+                '/software' => 'SoftwaresController@index',
+                '/software/create' => 'SoftwaresController@create',
+                '/software/edit/[0-9]+' => 'SoftwaresController@edit',
+                '/software/delete/[0-9]+' => 'SoftwaresController@delete',
 
                 // Fallback
                 '/404' => 'NotFoundController@index',
@@ -106,6 +118,9 @@ class Routes
                 // Usuário
                 '/usuario/save' => 'UsuarioController@save',
 
+                // Ativo
+                '/ativo/save' => 'AtivoController@save',
+                
                 // Equipamento
                 '/equipamento/save' => 'EquipamentoController@save',
 

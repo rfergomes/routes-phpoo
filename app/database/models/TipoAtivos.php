@@ -2,11 +2,12 @@
 
 namespace app\database\models;
 
-class Ativo extends Model
+class TipoAtivos extends Model
 {
-    protected string $table = 'ativos';
+    protected string $table = 'tipo_ativos';
     protected string $primaryKey = 'id';
     protected string $dateFormat = 'Y-m-d H:i:s';
     protected string $primaryKeyField = 'id';
-    protected string $tableView = 'list_ativos';
+    protected string $tableView = 'list_tipo_ativos';
+
 }
