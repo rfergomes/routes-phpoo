@@ -13,14 +13,14 @@
                     <div class="col d-flex justify-content-start">
                         <h3><?= $title . (isset($count) ? " [" . $count . "]" : null) ?></h3>
                     </div>
-                    
+
                     <div class="col d-flex justify-content-end">
                         <a href="/ativo" class="btn btn-primary" title="Voltar">Voltar</a>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                        <?= $this->insert('partials/flash'); ?>
-                    </div>
+                    <?= $this->insert('partials/flash'); ?>
+                </div>
             </div>
             <div class="card-body">
                 <form action="/ativo/save" method="post">
@@ -29,28 +29,82 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="nome">Nome da ativo</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['nome']) ? 'is-invalid' : '' ?>" name="nome" id="nome" aria-describedby="Nomeativo" value="<?= $this->e(getOld('nome')) ?>" placeholder="Nome do Módulo">
-                                <?php if (isset($_SESSION['nome'])) {
-                                    echo flash('nome', 'field');
+                                <label class="form-label" for="equipamento_id">Equipamento</label>
+                                <select name="equipamento_id" id="equipamento_id" class="form-select w-auto">
+                                    <option value="" selected>Selecione um equipamento</option>
+                                    <?php foreach ($equipamentos as $equipamento): ?>
+                                    <option value="<?= $equipamento->id ?>"
+                                        <?= $this->e($equipamento->id) === getOld('equipamento_id') ? 'selected' : '' ?>>
+                                        <?= $equipamento->nome; ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (isset($_SESSION['equipamento_id'])) {
+                                    echo flash('equipamento_id', 'field');
                                 } ?>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="descricao">Descrição</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['descricao']) ? 'is-invalid' : '' ?>" name="descricao" id="descricao" value="<?= $this->e(getOld('descricao')) ?>" placeholder="Descrição">
-                                <?php if (isset($_SESSION['descricao'])) {
-                                    echo flash('descricao', 'field');
+                                <label class="form-label" for="tipo_id">Tipo de Ativo</label>
+                                <select name="tipo_id" id="tipo_id" class="form-select w-auto">
+                                    <option value="" selected>Selecione um tipo de ativo</option>
+                                    <?php foreach ($tipo_ativos as $tipo): ?>
+                                    <option value="<?= $tipo->id ?>"
+                                        <?= $this->e($tipo->id) === getOld('tipo_id') ? 'selected' : '' ?>>
+                                        <?= $tipo->nome; ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (isset($_SESSION['tipo_id'])) {
+                                    echo flash('tipo_id', 'field');
                                 } ?>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="slug">Ícone</label>
-                                <input type="text" class="form-control <?= isset($_SESSION['slug']) ? 'is-invalid' : '' ?>" name="slug" value="<?= $this->e(getOld('slug')) ?>" placeholder="slug">
-                                <?php if (isset($_SESSION['slug'])) {
-                                    echo flash('slug', 'field');
+                                <label class="form-label" for="localizacao_id">Localização</label>
+                                <select name="localizacao_id" id="localizacao_id" class="form-select w-auto">
+                                    <option value="" selected>Selecione uma localização</option>
+                                    <?php foreach ($localizacoes as $localizacao): ?>
+                                    <option value="<?= $localizacao->id ?>"
+                                        <?= $this->e($localizacao->id) === getOld('localizacao_id') ? 'selected' : '' ?>>
+                                        <?= $localizacao->nome; ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (isset($_SESSION['localizacao_id'])) {
+                                    echo flash('localizacao_id', 'field');
+                                } ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="responsavel_id">Responsável</label>
+                                <select name="responsavel_id" id="responsavel_id" class="form-select w-auto">
+                                    <?php foreach ($responsaveis as $responsavel): ?>
+                                    <option value="<?= $responsavel->id ?>"
+                                        <?= $this->e($responsavel->id) === $this->e($ativo->responsavel_id) ? 'selected' : '' ?>>
+                                        <?= $responsavel->nome;
+                                            getOld('responsavel_nome'); ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (isset($_SESSION['responsavel_id'])) {
+                                    echo flash('responsavel_id', 'field');
+                                } ?>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" for="observacoes">Observações</label>
+                                <input type="text"
+                                    class="form-control <?= isset($_SESSION['observacoes']) ? 'is-invalid' : '' ?>"
+                                    name="observacoes" value="<?= $this->e($ativo->observacoes) ?>"
+                                    placeholder="observacoes">
+                                <?php if (isset($_SESSION['observacoes'])) {
+                                    echo flash('observacoes', 'field');
                                 } ?>
                             </div>
                         </div>

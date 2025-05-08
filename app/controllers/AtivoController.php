@@ -7,6 +7,10 @@ use app\support\Validate;
 use app\database\Pagination;
 use app\Controllers\Controller;
 use app\database\models\Ativo;
+use app\database\models\Equipamento;
+use app\database\models\TipoAtivo;
+use app\database\models\Localizacao;
+use app\database\models\Responsavel;
 use app\middleware\PermissionMiddleware;
 
 class AtivoController extends Controller
@@ -14,7 +18,7 @@ class AtivoController extends Controller
     protected $ativo;
     protected string $viewFolder = 'ativos';
     protected int $moduloId = 1;
-    protected string $modulo='ativo';
+    protected string $modulo = 'ativo';
 
     public function __construct()
     {
@@ -51,28 +55,69 @@ class AtivoController extends Controller
             ]
         );
     }
-        
+
     public function create()
     {
         PermissionMiddleware::check($this->moduloId, 'adicionar');
 
+        $filters = new Filters();
+        $filters->where('alocado', '=', 0);
+        
+        $equipamento = new Equipamento();
+        $equipamentos = $equipamento->fetchAll();
+
+        $tipo_ativo = new TipoAtivo();
+        $tipo_ativos = $tipo_ativo->fetchAll();
+
+        $localizacao = new Localizacao();
+        $localizacoes = $localizacao->fetchAll();
+
+        $responsavel = new Responsavel();
+        $responsaveis = $responsavel->fetchAll();
+
         $this->view("{$this->viewFolder}/create", [
             'title' =>  ucfirst($this->viewFolder),
+            'equipamentos' => $equipamentos,
+            'tipo_ativos' => $tipo_ativos,
+            'localizacoes' => $localizacoes,
+            'responsaveis' => $responsaveis,
+            'equipamentos' => $equipamentos,
+            'tipo_ativos' => $tipo_ativos,
+            'localizacoes' => $localizacoes,
+            'responsaveis' => $responsaveis,
         ]);
     }
-    
+
     public function edit($id)
     {
         PermissionMiddleware::check($this->moduloId, 'editar');
         $ativo = $this->ativo->findBy('id', $id[0]);
+        
 
+        $equipamento = new Equipamento();
+        $equipamentos = $equipamento->fetchAll();
+
+        $tipo_ativo = new TipoAtivo();
+        $tipo_ativos = $tipo_ativo->fetchAll();
+
+        $localizacao = new Localizacao();
+        $localizacoes = $localizacao->fetchAll();
+
+        $responsavel = new Responsavel();
+        $responsaveis = $responsavel->fetchAll();
+        
         echo $this->view("{$this->viewFolder}/edit", [
             'title' =>  ucfirst($this->viewFolder),
-            'ativo' => $ativo
+            'ativo' => $ativo,
+            'equipamentos' => $equipamentos,
+            'tipo_ativos' => $tipo_ativos,
+            'localizacoes' => $localizacoes,
+            'responsaveis' => $responsaveis,
         ]);
     }
 
-    public function save(){
+    public function save()
+    {
         PermissionMiddleware::check($this->moduloId, 'editar');
         PermissionMiddleware::check($this->moduloId, 'adicionar');
         $validate = new Validate;
@@ -106,10 +151,9 @@ class AtivoController extends Controller
                 $result ? 'success' : 'danger',
                 $result ? 'Ativo Adicionada com sucesso!' : 'Falha ao adicionar Ativo'
             );
-        
         }
     }
-    
+
     public function delete($id)
     {
         PermissionMiddleware::check($this->moduloId, 'excluir');
@@ -129,5 +173,4 @@ class AtivoController extends Controller
 
         echo $this->view('ativos/show', ['ativo' => $ativo]);
     }
-    
 }
